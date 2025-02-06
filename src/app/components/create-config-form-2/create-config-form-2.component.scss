@@ -1,0 +1,12 @@
+.custom-input {
+    border: none;           /* Remove the default borders */
+    border-bottom: 2px solid #b7b4b4; /* Add a bottom border */
+    outline: none;    
+    border-radius: 0%;  
+    background: transparent;    /* Remove the outline */
+  }
+
+  .custom-input:focus {  /* Change the bottom border color on focus */
+    box-shadow: none;                  /* Remove the glow/box-shadow effect */
+    outline: none;                     /* Ensure there's no outline when focused */
+  }

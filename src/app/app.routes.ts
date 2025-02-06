@@ -5,6 +5,7 @@ import { FileViewer2Component } from './components/file-viewer2/file-viewer2.com
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { BatchrunComponent } from './components/batchrun/batchrun.component';
 import { CreateConfigFormComponent } from './components/create-config-form/create-config-form.component';
+import { CreateConfigForm2Component } from './components/create-config-form-2/create-config-form-2.component';
 
 export const routes: Routes = [
 
@@ -14,7 +15,7 @@ export const routes: Routes = [
             {path:'', pathMatch:'full', component: HomepageComponent},
             {path:'preview-edit' , component: UploadPreviewComponent },
             {path:'preview' , component: FileViewer2Component },
-            {path:'batchrun' , component: CreateConfigFormComponent }
+            {path:'batchrun' , component: CreateConfigForm2Component }
             
 
         ]
