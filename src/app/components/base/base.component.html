@@ -1,0 +1,13 @@
+<div [class.sidebar-visible]="sidebarVisible">
+  <!-- Navbar -->
+  <app-navbar (toggleSidebar)="toggleSidebar()"></app-navbar>
+
+  <!-- Main Content -->
+  <div class="content p-4">
+    <!-- <img src ="./broadside_blue.svg" style="width: 400px;" />
+    <p></p> -->
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<!-- Sidebar -->
+<app-sidebar [show]="sidebarVisible"></app-sidebar>

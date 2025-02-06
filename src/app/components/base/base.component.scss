@@ -1,0 +1,16 @@
+/* Wrapper for navbar and content */
+.sidebar-visible {
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+  }
+  
+  /* Default state */
+  .content {
+    transition: margin-left 0.3s ease;
+    text-align: center;
+
+  }
+  
+  .sidebar-visible .content {
+  }
+  

@@ -1,0 +1,48 @@
+<div class="editor-container">
+  <div class="toolbar">
+    <div class="d-flex ">
+      <!-- Display the file name -->
+      <!-- <span 
+      *ngIf="uploadedFileName" 
+      class="badge text-dark me-3 px-3 py-2" style="background-color: #f5f5f5;">
+      {{ uploadedFileName }}
+    </span>       -->
+      <!-- Upload File Button -->
+      <label class="btn btn-sm d-flex align-items-center" style="color: white;" for="uploadFile">
+        <div class="input-group">
+          <label class="input-group-text btn btn-outline" style="background-color: #452dd6;  color: white" for="templateFile">Browse...</label>
+          <input
+            type="file"
+            id="templateFile"
+            name="templateFile"
+            class="form-control d-none"
+            (change)="onFileUpload($event)"
+          />
+          <input
+            type="text"
+            class="form-control"
+            id="fileName1"
+            placeholder="No file chosen"
+            readonly
+          />
+        </div>
+      </label>
+      
+      <!-- Toggle Editor Button -->
+      <button 
+        class="" style="background-color: #452dd6; color: white; border-radius: 6px; height:35px; margin-top:5px; border: none;"
+        (click)="toggleEditorVisibility()">
+        Toggle Editor
+      </button>
+    </div>
+  </div>
+
+  <!-- Conditional Rendering of Editor -->
+  <div *ngIf="isEditorVisible" class="editor-content">
+    <angular-editor 
+      [(ngModel)]="htmlContent" 
+      [config]="config"
+      (ngModelChange)="onContentChange()"
+    ></angular-editor>
+  </div>
+</div>

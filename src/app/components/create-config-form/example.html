@@ -1,0 +1,280 @@
+
+            <div class="channel-details-page pb-3">
+
+              <div class="container">
+
+                <div>
+                  <span align="center" class="successmsg" name="config_msg" id="config_msg">
+                    <s:property value="#request.config_msg" />
+                  </span>
+                  <span align="center" class="errormsg" name="config_err" id="config_err">
+                    <s:iterator value="#request['errormap']" status="st">
+                      <s:property value="%{value}" />
+                      <br>
+                    </s:iterator>
+                  </span>
+                  <span id="serverSideConfirm">
+                    <s:property value="#request.serverSideConfirm" />
+                  </span>
+                  <span id="msg"></span>
+                </div>
+
+
+                <div id="configform">
+
+                  <div class="title-bar mb-3">
+                    <div class="row">
+                      <div class="col-md-7">
+                        <div class="channel-name">
+                          <h2 class="main-title">Configuration Form:</h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="detail-fields">
+                    <form accept-charset="UTF-8" id="createconfigfile" name="createconfigfile" method="post" enctype="multipart/form-data"
+                      action="/broadside/app/GenerateConfigFile.action"><input type="hidden" name="appid"
+                        value="<c:out value='${sessionScope.context}'/>">
+
+                      <div style="border-collapse: collapse">
+
+                        <div style="background-color: #eae9ff;" class="mt-4">
+                          <span id="metadata">Add Tags to
+                            Metadata</span>
+                        </div>
+
+                        <div class="mt-4">
+                          <table>
+                            <tr style="background-color: #eae9ff;">
+                              <td colspan="5">
+                                <table id="metadataConstants">
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+
+
+                        <div class=" mt-2 row mb-4 align-items-end">
+                          <div class="col-md-4">
+                            <div class="form-floating">
+                              <input class="form-control border-input" type="text" name="configFileName"
+                                id="configFileName" title="Allowed characters in this field are a-z,A-Z,0-9,-,_" />
+                              <label><span class="compulsary">*</span>Config File Name:</label>
+                            </div>
+                            <div>
+                              <div><span id="configfile_err" class="errormsg">
+                                  <s:property value="#request.error_configFileName" />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="mt-2 col-md-4">
+                            <div class="form-floating">
+                              <input class="form-control border-input" type="text" name="templateFileRelativePath"
+                                id="templateFileRelativePath" title="Don't start with '/' or end with '/'" />
+                              <label><span class="compulsary">*</span>Template Relative Path:</label>
+                            </div>
+                            <div>
+                              <div><span id="templateFileRelativePath_err" class="errormsg">
+                                  <s:property value="#request.error_templateFileRelativePath" />
+                                </span></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row mb-4">
+                          <div class="col-md-4">
+                            <label for="formFile" class="form-label"><span class="compulsary">*</span>Template
+                              File:</label>
+                            <input class="form-control" type="file" name="templateFile" id="templateFile" />
+                          </div>
+                          <div>
+                            <div><span id="template_err" class="errormsg"></span> </div>
+                          </div>
+                        </div>
+
+
+                        <div class="row mb-4 align-items-end">
+
+                          <div class="col-md-4">
+                            <div class="form-floating">
+                              <input class="form-control border-input" type="text" name="from" id="from"
+                                style="width: 400px" />
+                              <label><span class="compulsary">*</span>From:</label>
+                            </div>
+                            <div>
+                              <div><span id="from_err" class="errormsg">
+                                  <s:property value="#request.error_from" />
+                                </span></div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-floating">
+                              <input class="form-control border-input" type="text" name="subject" id="subject"
+                                style="width: 400px" />
+                              <label><span class="compulsary">*</span>Subject:</label>
+                            </div>
+                            <div>
+                              <div><span id="subject_err" class="errormsg">
+                                  <s:property value="#request.error_subject" />
+                                </span></div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div class="row mb-4 align-items-end">
+
+                          <div class="col-md-4">
+                            <div class="form-floating">
+                              <input class="form-control border-input" type="text" name="replyto" id="replyto"
+                                style="width: 400px" />
+                              <label><span class="compulsary">*</span>Reply To:</label>
+                            </div>
+                            <div>
+                              <div><span id="replyto_err" class="errormsg">
+                                  <s:property value="#request.error_replyto" />
+                                </span></div>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4">
+                            <div class="form-floating">
+                              <input class="form-control border-input" type="text" name="attachmentDirectory"
+                                id="attachmentDirectory" title="Don't start with '/' or end with '/'" />
+                              <label>Attachment Directory:</label>
+                            </div>
+                            <div>
+                              <div><span id="attachmentDirectory_err" class="errormsg">
+                                  <s:property value="#request.error_attachmentDirectory" />
+                                </span></div>
+                            </div>
+                          </div>
+                        </div>
+
+
+                        <div style="background-color: #eae9ff;">
+                          <div>
+                            <span id="namespace">Add Namespace</span>
+                          </div>
+  
+                          <div>
+                            <table>
+                              <tr style="background-color: #eae9ff;">
+                                <td colspan="5">
+                                  <table style="border-collapse: collapse; color: #0000FF;" id="namespaceConstants">
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+  
+                          <div>
+                            <table>
+                              <tr style="background-color: #eae9ff;">
+                                <td colspan="5">
+                                  <table style="border-collapse: collapse; color: #0000FF;" id="namespaceColumns">
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                        </div>
+
+                        <div class="row mt-3 align-items-end">
+                          <div class="col-md-4">
+                            <div class="form-floating">
+                              <input type="text" name="constantName" id="constantName" value="campid"
+                                title="'campid' is a compulsory constant. Allowed characters in this field are a-z, A-Z, 0-9, -, _"
+                                placeholder="Tag Name" class="form-control border-input tag-data" /><label>Tag
+                                Name</label>
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-floating">
+                              <input type="text" name="constantValue" id="constantValue"
+                                title="Allowed characters in this field are a-z, A-Z, 0-9, -, _" placeholder="Tag Value"
+                                class="form-control border-input tag-data" /><label>Tag
+                                Value</label>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4" id="serveractions">
+                            <button type="button" id="tag-button" class="btn btn-primary" value="AddConstant"
+                              onclick="addConstantsToConfig('constantName','constantValue')">Add Tag</button>
+                          </div>
+                        </div>
+
+                        <div class="mt-4">
+                          <table>
+                            <tr>
+                              <td colspan="5">
+                                <table id="constantsList">
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+
+
+                        <div class="row mb-4 align-items-end">
+                          <div class="col-md-4">
+                            <div class="form-floating">
+                              <input name="column" id="column"
+                                title="Allowed characters in this field are a-z, A-Z, 0-9, -, _" type="text"
+                                placeholder="Columns" class="form-control border-input" /><label><span class="compulsary">*</span>Columns</label>
+                            </div>
+                          </div>
+
+                          <div class="col-md-4" id="serveractions">
+                            <button type="button" name="generateConfigFile" value="Add Column"
+                              onclick="addColumn('column')" class="btn btn-primary">Add Columns</button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <table>
+                            <tr>
+                              <td colspan="5">
+                                <table id="columnsList">
+                                </table>
+                              </td>
+                            </tr>
+                          </table>
+                        </div>
+
+                        <div class="row mb-3 mt-2">
+
+                          <div class="col-auto" id="serveractions">
+                            <input
+                                          class="btn btn-primary pill_tbl_bg_button" name="generateConfigFile"
+                                          type="button" value="Generate Config File"
+                                          onclick="sendMyRequest('createconfigfile','<c:out value="${sessionScope.context}" />')"
+                                          size="50" />
+                          </div>
+
+                          <div class="col-auto" id="serveractions">
+                            <button type="reset" name="reset" onclick="clearConfigForm();"
+                              class="btn btn-primary">Reset</button>
+                          </div>
+
+                        </div>
+
+                        <!-- end -->
+
+                      </div>
+                    </form>
+                  </div>
+
+                </div>
+
+
+              </div>
+            </div>
+
+          </div>
+        </div>

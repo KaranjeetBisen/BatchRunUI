@@ -1,0 +1,17 @@
+
+<div
+  class="sidebar"
+  [ngClass]="{ 'active': show }"
+>
+  <div class="p-3">
+    <img src="./broadsideLogo.svg">
+    <div class="button-group ">
+        <button class="btn  btn-block text-start mb-2"><i class="fas fa-landmark" style="color: #ffffff;"></i> Menu</button>
+        <button class="btn  btn-block text-start mb-2"><i class="fas fa fa-file-text" style="color: #ffffff;"></i> Report</button>
+        <button class="btn  btn-block text-start mb-2" routerLink="batchrun"><i class="fas fa fa-envelope-square" style="color: #ffffff;"></i> BatchRun</button>
+        <button class="btn  btn-block text-start mb-2" routerLink="preview-edit"><i class="fas fa fa-edit" style="color: #ffffff;" ></i> Preview Editor</button>
+        <button class="btn  btn-block text-start mb-2" routerLink="preview"><i class="fas fa fa-upload" style="color: #ffffff;" ></i> Upload Preview</button>
+        <!-- <button class="btn  btn-block text-start" routerLink="preview2"><i class="fas fa fa-upload" style="color: #ffffff;" ></i> Upload Preview</button> -->
+      </div>
+  </div>
+</div>

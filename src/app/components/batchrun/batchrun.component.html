@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="title-bar mb-3">
+    <div class="row">
+      <div class="col-md-7">
+        <h2 class="main-title">Batch Run</h2>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="preprocessorStarted">
+    <span class="successmsg">{{ preprocessorSuccessMessage }}</span>
+  </div>
+
+  <div class="detail-fields">
+    <form [formGroup]="batchRunForm">
+      <div class="row mb-3 align-items-end">
+        <div class="col-md-4 mb-2">
+          <label class="form-label">Configuration Files</label>
+          <select class="form-select form-control border-input" formControlName="conffilename">
+            <option value="">--Select--</option>
+            <option *ngFor="let file of configFiles" [value]="file.conffilename">
+              {{ file.conffilename }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div *ngIf="inputFileError" class="errormsg">{{ inputFileError }}</div>
+        <div class="col-md-4">
+          <label for="formFile" class="form-label">Upload input file</label>
+          <input class="form-control" type="file" (change)="onFileSelect($event)" />
+        </div>
+      </div>
+
+      <div class="text-center mt-3">
+        <button type="button" class="btn btn-primary" (click)="startBatchRun()">
+          Start Batch Run
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

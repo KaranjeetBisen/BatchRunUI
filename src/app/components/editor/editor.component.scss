@@ -1,0 +1,35 @@
+.editor-container {
+  justify-content: flex-start; // Ensures alignment inside the editor
+  display: flex;
+  flex-direction: column;
+  height: 560px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 4px 4px 0 0;
+}
+
+.editor-content {
+  text-align: left; // Default alignment for the content
+  flex-grow: 1;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid black;
+  border-radius: 0 0 4px 4px;
+  background-color: white;
+
+}
+
+button, label {
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+label {
+  cursor: pointer;
+}

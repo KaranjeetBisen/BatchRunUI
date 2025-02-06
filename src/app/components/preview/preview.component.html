@@ -1,0 +1,19 @@
+<div class="preview-container p-3  bg-light">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="mb-0">Live Preview:</h5>
+    <button class="btn btn-sm" style="background-color: #452dd6; color: white;" (click)="downloadHTML()">Download</button>
+  </div>
+
+  <!-- Preview Content -->
+  <div 
+    class="bg-white border p-3 overflow-auto"
+    style="
+      height: 400px; 
+      max-width: 100%; 
+      word-wrap: break-word; 
+      text-align: left; 
+      padding: 15px;">
+    <div [innerHTML]="sanitizedHtmlContent"></div>
+  </div>
+</div>
