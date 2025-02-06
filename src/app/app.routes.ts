@@ -1,11 +1,10 @@
 import { Routes } from '@angular/router';
-import { BaseComponent } from './components/base/base.component';
-import { UploadPreviewComponent } from './components/upload-preview/upload-preview.component';
-import { FileViewer2Component } from './components/file-viewer2/file-viewer2.component';
-import { HomepageComponent } from './components/homepage/homepage.component';
-import { BatchrunComponent } from './components/batchrun/batchrun.component';
-import { CreateConfigFormComponent } from './components/create-config-form/create-config-form.component';
-import { CreateConfigForm2Component } from './components/create-config-form-2/create-config-form-2.component';
+import { FileViewer2Component } from './components/commons/file-viewer2/file-viewer2.component';
+import { CreateConfigForm2Component } from './components/batch-run/create-config-form-2/create-config-form-2.component';
+import { UploadPreviewComponent } from './components/batch-run/upload-preview/upload-preview.component';
+import { BaseComponent } from './components/commons/base/base.component';
+import { HomepageComponent } from './components/commons/homepage/homepage.component';
+
 
 export const routes: Routes = [
 
@@ -16,8 +15,6 @@ export const routes: Routes = [
             {path:'preview-edit' , component: UploadPreviewComponent },
             {path:'preview' , component: FileViewer2Component },
             {path:'batchrun' , component: CreateConfigForm2Component }
-            
-
         ]
     }
 ];
