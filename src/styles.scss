@@ -1,17 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-    --ae-gap: 5px;
-    --ae-text-area-border: 1px solid #ddd;
-    --ae-text-area-border-radius: 0;
-    --ae-focus-outline-color: #afaeae auto 1px;
-    --ae-toolbar-padding: 10px;
-    --ae-toolbar-bg-color: #f5f5f5;
-    --ae-toolbar-border-radius: 5px;
-    --ae-button-bg-color: 
+  --ae-gap: 5px;
+  --ae-text-area-border: 1px solid #ddd;
+  --ae-text-area-border-radius: 0;
+  --ae-focus-outline-color: #afaeae auto 1px;
+  --ae-toolbar-padding: 10px;
+  --ae-toolbar-bg-color: #f5f5f5;
+  --ae-toolbar-border-radius: 5px;
+  --ae-button-bg-color:
     --ae-button-border: 1px solid black;
-    --ae-button-radius: 3px;
-    --ae-button-hover-bg-color: #5D4BC5;
-    --ae-button-active-bg-color: #5D4BC5;
-    --ae-button-disabled-bg-color: gray;
-  }
-  
+  --ae-button-radius: 3px;
+  --ae-button-hover-bg-color: #5D4BC5;
+  --ae-button-active-bg-color: #5D4BC5;
+  --ae-button-disabled-bg-color: gray;
+}
+
+.custom-input {
+  border: none;
+  /* Remove the default borders */
+  border-bottom: 2px solid #b7b4b4;
+  /* Add a bottom border */
+  outline: none;
+  border-radius: 0%;
+  background: transparent;
+  /* Remove the outline */
+}
