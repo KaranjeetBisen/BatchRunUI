@@ -1,5 +1,78 @@
 .formcontainer {
-    width: 100% !important;
+    // width: 100% !important;
+    margin-left: 5% !important;
+    text-align: left;
+
+}
+
+.form-label {
+    color: #505052;
+    font-size: 12px;
+    margin-bottom: 3px;
+    margin-left: 2%;
+    text-align: left;
+}
+
+.custom-input {
+    border: none;
+    /* Remove the default borders */
+    border-bottom: 2px solid #b7b4b4;
+    /* Add a bottom border */
+    outline: none;
+    border-radius: 0%;
+    background: transparent;
+    /* Remove the outline */
+}
+
+.form-select:focus {
+    box-shadow: 0px 0 4px 0px var(--gray);
+    outline: none;
+    border-color: var(--white);
+}
+
+.form-floating .border-input,
+.border-input {
+    border: none;
+    border-bottom: 0.5px solid #aaabb0;
+    border-radius: 0;
+    box-shadow: none !important;
+    padding-left: 0;
+    padding-right: 35px;
+}
+
+.form-floating p.border-input {
+    height: auto;
+}
+
+.form-floating label {
+    padding-left: 0;
+    color: #505052;
+}
+
+.form-label,
+.select-label {
+    color: #505052;
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+
+.form-floating>label {
+    top: 10px;
+}
+
+.form-floating>.form-control:not(:placeholder-shown)~label,
+.form-floating>.form-control:focus~label {
+    top: -10px;
+    padding-left: 0;
+    left: -2px;
+}
+
+.datepicker {
+    position: relative;
+}
+
+.input-group-text {
+    cursor: pointer;
 }
 
 @media (max-width: 767px) {

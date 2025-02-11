@@ -15,3 +15,69 @@
   --ae-button-disabled-bg-color: gray;
 }
 
+.custom-input {
+  border: none;
+  /* Remove the default borders */
+  border-bottom: 2px solid #b7b4b4;
+  /* Add a bottom border */
+  outline: none;
+  border-radius: 0%;
+  background: transparent;
+  /* Remove the outline */
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+
+.theme-dark-blue .bs-datepicker-container {
+  background-color: #a292ff !important;
+  /* Dark blue background */
+  // color: #ffffff !important;
+  /* White text */
+  border-radius: 8px;
+  /* Rounded corners */
+}
+
+.theme-dark-blue .bs-datepicker-head {
+  background-color: #452dd6 !important;
+  /* Lighter blue header */
+}
+
+.theme-dark-blue .bs-datepicker-body table th {
+  color: #ffffff !important;
+  /* White text for dates */
+}
+
+.bs-datepicker-body table td span.is-other-month {
+  color: #ffffff !important;
+}
+
+.bs-datepicker-body table td span.disabled,
+.bs-datepicker-body table td.disabled span {
+  color: #ffffff !important;
+}
+
+// .theme-dark-blue .bs-datepicker-body table td span {
+//   color: #ffffff !important;
+//   /* White text for dates */
+// }
+
+// .theme-dark-blue .bs-datepicker-body table td span.selected {
+//   background-color: #9333ea !important;
+//   /* Purple highlight */
+//   color: #fff !important;
+// }
+
+.custom-today {
+  border: 4px solid red !important;
+  /* Red border for today's date */
+}

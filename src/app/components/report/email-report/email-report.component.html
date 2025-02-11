@@ -1,51 +1,115 @@
-<div class="container formcontainer mt-4">
-    <h2 class="text-primary">Generate Report</h2>
+<div class="container formcontainer mt-4 ">
+  <div class="ml-4">
+    <h2 class="text-primary" style="color: #452dd6 !important;">Generate Report</h2>
     <p class="text-danger" *ngIf="error">• {{ error }}</p>
-    
-    <div class="p-4 mt-3">
-      <div class="row g-3">
+  </div>
+  
+  <div >
+      <div class="row mb-3">
         <div class="col-md-4">
-          <label class="form-label">Select Application</label>
-          <select class="form-select custom-input">
-            <option selected>remiges_test</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Status Type</label>
-          <select class="form-select custom-input">
-            <option selected>All</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Start Date</label>
-          <div class="input-group ">
-            <input type="date" class="form-control custom-input" />
-            <button class="btn btn-outline-secondary" type="button">🔄</button>
+          <div class="autocomplete-select">
+            <label class="select-label">Select Application</label>
+            <select class="form-select form-control border-input" name="report_appid" id="report_appid" onchange="generateReportCount()">
+              <option value="72" selected="">
+                remiges_test
+              </option>
+              <option value="all">All My Apps</option>
+            </select>
           </div>
         </div>
+
         <div class="col-md-4">
-          <label class="form-label">End Date</label>
-          <div class="input-group">
-            <input type="date" class="form-control custom-input" />
-            <button class="btn btn-outline-secondary" type="button">🔄</button>
+          <div>
+            <span id="error_bml_status" class="errormsg"></span>
+          </div>
+          <div class="autocomplete-select">
+            <label class="select-label">Status Type</label>
+            <select class="form-select form-control border-input" name="bml_status" id="bml_status" onchange="generateReportCount()">
+              <option value="" selected="">All</option>
+              <option value="bounced">Bounced</option>
+              <option value="dispatched">Dispatched</option>
+              <option value="rejected">Rejected</option>
+              <option value="sent">Sent</option>
+              <option value="skipped">Skipped</option>
+            </select>
           </div>
         </div>
+      </div>
+      <div class="row mb-3">
         <div class="col-md-4">
-          <label class="form-label">Sender Address</label>
-          <input type="text" class="form-control custom-input" />
+          <div>
+            <span id="error_date_start" class="errormsg"></span>
+          </div>
+          <div class="">
+            <label class="select-label">Start Date</label>
+            <div class="form-outline datepicker" style="display: flex; align-items: center;">
+              <input type="text" class="form-control" placeholder="Select Date" bsDatepicker [bsConfig]="bsConfig" [formControl]="dateStart" id="date_start" #dateStartPicker="bsDatepicker">
+              <span class="input-group-text bg-light d-block">
+                  <i class="fa fa-calendar" (click)="showCalendar(dateStartPicker)"></i>
+              </span>
+              <span class="input-group-text bg-light d-block">
+                 <i class="fa fa-refresh" (click)="clearDate(dateStart)"></i>
+              </span>
+            </div>
+          </div>
         </div>
+        
         <div class="col-md-4">
-          <label class="form-label">Header Sender</label>
-          <input type="text" class="form-control custom-input" />
+          <div>
+            <span id="error_date_end" class="errormsg"></span>
+          </div>
+          <div class="">
+            <label class="select-label">End Date</label>
+            <div class="form-outline datepicker" style="display: flex; align-items: center;">
+              <input type="text" class="form-control" placeholder="Select Date"
+              bsDatepicker [bsConfig]="bsConfig" [formControl]="dateEnd" id="date_end" #dateEndPicker="bsDatepicker">
+              <span class="input-group-text bg-light d-block">
+                <i class="fa fa-calendar" (click)="showCalendar(dateEndPicker)"></i>
+              </span>
+              <span class="input-group-text bg-light d-block">
+                  <i class="fa fa-refresh"  (click)="clearDate(dateEnd)"></i>
+              </span>
+            </div>
+          </div>
         </div>
-        <div class="col-md-12">
-          <label class="form-label">Recipient Address</label>
-          <input type="text" class="form-control custom-input" />
+      </div>     
+      <div class="row mb-3">
+
+        <div class="col-md-4">
+          <div>
+            <span id="error_bml_input_envsender" class="errormsg"></span>
+          </div>
+          <div class="form-floating">
+            <input type="text" placeholder="Sender Address" class="form-control border-input" name="bml_input_envsender" id="bml_input_envsender" onchange="generateReportCount()"><label>Sender
+              Address</label>
+          </div>
+        </div>
+
+
+        <div class="col-md-4">
+          <div>
+            <span id="error_bml_hdr_sender" class="errormsg"></span>
+          </div>
+          <div class="form-floating">
+            <input type="text" placeholder="Header Sender" class="form-control border-input" name="bml_hdr_sender" id="bml_hdr_sender" onchange="generateReportCount()"><label>Header
+              Sender</label>
+          </div>
         </div>
       </div>
-      <div class="d-flex gap-3 mt-4">
-        <button class="btn btn-primary">Generate summary report</button>
-        <button class="btn btn-primary">Generate report</button>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <div>
+            <span id="error_bml_envrcpt" class="errormsg"></span>
+          </div>
+          <div class="form-floating">
+            <input type="text" placeholder="Recipient Address" class="form-control border-input" name="bml_envrcpt" id="bml_envrcpt" onchange="generateReportCount()"><label>Recipient
+              Address</label>
+          </div>
+        </div>
       </div>
+    <div class="d-flex gap-3 mt-4">
+      <button class="btn " style="background-color: #452dd6; color: white;">Generate summary report</button>
+      <button class="btn" style="background-color: #452dd6; color: white;">Generate report</button>
     </div>
   </div>
+</div>
