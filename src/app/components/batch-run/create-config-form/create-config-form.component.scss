@@ -1,0 +1,17 @@
+input {
+	border: none;
+	border-bottom: 1px solid #B1B2B6; /* Adjust the color and thickness as needed */
+	border-radius: 0;
+	outline: none; /* Removes the default focus outline */
+	box-shadow: none; /* Ensures no glow or highlight */
+  }
+  
+  input:focus {
+	 /* Change focus border color */
+	outline: none;
+	box-shadow: none; /* Removes any default browser highlight */
+  }
+  
+  .custom-label{
+	margin-top: -5px;
+  }

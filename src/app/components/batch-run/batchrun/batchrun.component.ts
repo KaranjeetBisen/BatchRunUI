@@ -13,51 +13,51 @@ import { HttpClient } from '@angular/common/http';
 })
 export class BatchrunComponent{
 
-  batchRunForm: FormGroup;
-  configFiles: any[] = [];
-  errorMessages: string[] = [];
-  preprocessorStarted: boolean = false;
-  preprocessorSuccessMessage: string = '';
-  inputFileError: string = '';
+  // batchRunForm: FormGroup;
+  // configFiles: any[] = [];
+  // errorMessages: string[] = [];
+  // preprocessorStarted: boolean = false;
+  // preprocessorSuccessMessage: string = '';
+  // inputFileError: string = '';
 
-  constructor(private fb: FormBuilder, private batchRunService: BatchrunServiceService) {
-    this.batchRunForm = this.fb.group({
-      conffilename: [''],
-      md5sum_conffilename: [''],
-      md5sum_inputfile: [''],
-      starttime: [''],
-      inputfile: [null]
-    });
-  }
+  // constructor(private fb: FormBuilder, private batchRunService: BatchrunServiceService) {
+  //   this.batchRunForm = this.fb.group({
+  //     conffilename: [''],
+  //     md5sum_conffilename: [''],
+  //     md5sum_inputfile: [''],
+  //     starttime: [''],
+  //     inputfile: [null]
+  //   });
+  // }
 
-  ngOnInit(): void {
-    this.getConfigurationFiles();
-  }
+  // ngOnInit(): void {
+  //   this.getConfigurationFiles();
+  // }
 
-  getConfigurationFiles(): void {
-    this.batchRunService.getConfigFiles().subscribe((files) => {
-      this.configFiles = files;
-    });
-  }
+  // getConfigurationFiles(): void {
+  //   this.batchRunService.getConfigFiles().subscribe((files) => {
+  //     this.configFiles = files;
+  //   });
+  // }
 
-  onFileSelect(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.batchRunForm.patchValue({ inputfile: file });
-    }
-  }
+  // onFileSelect(event: any): void {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     this.batchRunForm.patchValue({ inputfile: file });
+  //   }
+  // }
 
-  startBatchRun(): void {
-    if (this.batchRunForm.valid) {
-      this.batchRunService.startBatchRun(this.batchRunForm.value).subscribe(
-        (response) => {
-          this.preprocessorStarted = true;
-          this.preprocessorSuccessMessage = response.message;
-        },
-        (error) => {
-          this.errorMessages = error.errors || [];
-        }
-      );
-    }
-  }
+  // startBatchRun(): void {
+  //   if (this.batchRunForm.valid) {
+  //     this.batchRunService.startBatchRun(this.batchRunForm.value).subscribe(
+  //       (response) => {
+  //         this.preprocessorStarted = true;
+  //         this.preprocessorSuccessMessage = response.message;
+  //       },
+  //       (error) => {
+  //         this.errorMessages = error.errors || [];
+  //       }
+  //     );
+  //   }
+  // }
 }

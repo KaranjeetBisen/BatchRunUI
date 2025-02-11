@@ -1,15 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-create-config-form-2',
+  selector: 'app-create-config-form',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './create-config-form-2.component.html',
-  styleUrl: './create-config-form-2.component.scss'
+  templateUrl: './create-config-form.component.html',
+  styleUrl: './create-config-form.component.scss'
 })
-export class CreateConfigForm2Component {
-
+export class CreateConfigFormComponent implements OnInit {
   configForm!: FormGroup;
 
   constructor(private fb: FormBuilder) {}
