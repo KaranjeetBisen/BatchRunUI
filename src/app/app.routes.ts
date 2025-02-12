@@ -6,6 +6,7 @@ import { HomepageComponent } from './components/commons/homepage/homepage.compon
 import { EmailReportComponent } from './components/report/email-report/email-report.component';
 import { CreateConfigFormComponent } from './components/batch-run/create-config-form/create-config-form.component';
 import { BatchrunComponent } from './components/batch-run/batchrun/batchrun.component';
+import { TestRunFormComponent } from './components/batch-run/test-run-form/test-run-form.component';
 
 
 export const routes: Routes = [
@@ -19,6 +20,7 @@ export const routes: Routes = [
             {path:'batchrun' , component: BatchrunComponent},
             {path:'report' , component: EmailReportComponent },
             {path:'create-config' , component: CreateConfigFormComponent },
+            {path:'test-run' , component: TestRunFormComponent },
 
         ]
     }

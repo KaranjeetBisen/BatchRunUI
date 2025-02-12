@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="data_tbl" style="width: 90%">
+      <div class="title-bar mb-3">
+        <div class="row">
+          <div class="col-md-7">
+            <h2 class="main-title">Test Run</h2>
+          </div>
+        </div>
+      </div>
+      
+      <form name="testpreprocessor" id="testpreprocessor" method="post" action="/broadside/app/StartTestPreprocessor.action" enctype="multipart/form-data">
+        <input type="hidden" name="appid" id="appid" value="72" />
+        
+        <div class="text-center text-danger" id="messagemap"></div>
+        
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Configuration Files to be tested</label>
+            <select class="form-select" name="conffilename" id="conffilename" onchange="configCheckDtls('conf_details')">
+              <option value="">--Select--</option>
+              <option value="042019_swap.conf">042019_swap.conf</option>
+              <option value="112233_swapnil.conf">112233_swapnil.conf</option>
+            </select>
+            <span id="error_conffilename" class="errormsg"></span>
+          </div>
+        </div>
+        
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label for="inputfile" class="form-label">Upload input file</label>
+            <input class="form-control" type="file" name="inputfile" id="inputfile" />
+            <span id="error_csvlength" class="errormsg"></span>
+          </div>
+        </div>
+        
+        <div>
+          <button type="button" class="btn btn-primary" id="runtestpreprocessor" onclick="runTestPreprocesser()">Start Test Run</button>
+        </div>
+        
+        <div id="conf_details"></div>
+        <div class="text-success" id="pp_previous"></div>
+      </form>
+    </div>
+  </div>
+  
+  <script>
+    startStatusTimer("", "", "");
+  </script>
+  
