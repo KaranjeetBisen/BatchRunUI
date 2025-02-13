@@ -30,6 +30,13 @@
           <!-- Metadata Section -->
           <div class="mt-4" style="background-color: #eae9ff;">
             <strong>Add Tags to Metadata</strong>
+            <div id="namespaceColumns">
+              <div *ngFor="let const of constants">
+                <label>
+                  <input type="checkbox" name="namespaceColumns" [value]="const.name" /> {{ const.name }}
+                </label>
+              </div>
+            </div>
           </div>
           <div class="mt-4">
             <table id="metadataConstants"></table>
@@ -57,11 +64,18 @@
           <div class="row g-3 mb-4">
             <div class="col-md-4">
               <label class="form-label"><span class="text-danger">*</span> Template File:</label>
-              <input class="form-control" type="file" (change)="onFileChange($event)" style="border: 1px solid #B1B2B6;">
-              <span class="errormsg">{{ templateFileError }}</span>
+              <input class="form-control" type="file" (change)="onFileSelected($event)" style="border: 1px solid #B1B2B6; border-radius: 5px;">
+            </div>
+            <div class="col-md-4" style="margin-top: 47px;">
+              <button type="button" class="btn btn-color" (click)="togglePreview()" [disabled]="!selectedFile">Preview</button>
             </div>
           </div>
 
+          <!-- Pass selected file to the FileViewer2Component -->
+           <div *ngIf="showPreview" style="margin-left: -10px;">
+          <app-file-viewer2 [fileInput]="selectedFile"></app-file-viewer2>
+        </div>
+          
           <!-- Email Fields -->
           <div class="row g-3 mb-4">
             <div class="col-md-4">
@@ -110,16 +124,23 @@
             </div>
             <div class="col-md-4">
               <div class="form-floating">
-                <input type="text" formControlName="constantValue" class="form-control">
-                <label class="custom-label">Tag Value</label>
+                <input type="text" formControlName="constantValue" class="form-control" >
+                <label class="custom-label" >Tag Value</label>
               </div>
             </div>
             <div class="col-md-4 mt-4">
-              <button type="button" class="btn btn-primary">Add Tag</button>
+              <button type="button" class="btn btn-color" (click)="addConstant()">Add Tag</button>
             </div>
           </div>
-          <div class="mt-3">
-            <table id="constantsList" class="table table-bordered"></table>
+         
+
+          <div class="mt-3" id="constantList">
+            <div *ngFor="let const of constants" class="value-list-item d-flex align-items-center">
+              <span class="column text-primary me-2">{{ const.name }}: {{ const.value }}</span>
+              <div class="close-icon light" (click)="removeConstant(const.name)">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </div>
+            </div>
           </div>
 
           <!-- Columns Input -->
@@ -131,31 +152,30 @@
               </div>
             </div>
             <div class="col-md-4 mt-4">
-              <button type="button" class="btn btn-primary" (click)="addColumn(columnInput)" >Add Columns</button>
+              <button type="button" class="btn btn-color" (click)="addColumn(columnInput)" >Add Columns</button>
             </div>
 
 
             <div id="columnsList">
-              <div *ngFor="let col of columns" class="value-list-item ">
-                <span class="column" style="color: blue">Column: {{ col }}</span>
+              <div *ngFor="let col of columns" class="value-list-item d-flex align-items-center">
+                <span class="column text-primary me-2">Column: {{ col }}</span>
                 <div class="close-icon light" (click)="removeColumn(col)">
                   <i class="fa fa-times" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
-            
+
+
           </div>
-          <div>
-            <table id="columnsList" class="table table-bordered"></table>
-          </div>
+  
 
           <!-- Buttons -->
           <div class="row g-3">
             <div class="col-auto">
-              <button type="submit" class="btn btn-success" >Generate Config File</button>
+              <button type="submit" class="btn btn-color" >Generate Config File</button>
             </div>
             <div class="col-auto">
-              <button type="reset" class="btn btn-secondary" >Reset</button>
+              <button type="reset" class="btn btn-color" >Reset</button>
             </div>
           </div>
         </form>

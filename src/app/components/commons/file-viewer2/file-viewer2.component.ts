@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Input, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 
@@ -10,6 +10,8 @@ import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
   styleUrl: './file-viewer2.component.scss'
 })
 export class FileViewer2Component {
+
+  @Input() fileInput: File | null = null; // Receive file from parent
 
   selectedFileName: string | null = null;
     uploadedHtml: string = '';
@@ -45,6 +47,21 @@ export class FileViewer2Component {
     resizeStartY = 0;
   
     constructor(private sanitizer: DomSanitizer) {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+      if (changes['fileInput'] && this.fileInput) {
+        this.readFileContent(this.fileInput);
+      }
+    }
+
+    readFileContent(file: File): void {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.uploadedHtml = reader.result as string;
+        this.safeHtmlContent = this.sanitizer.bypassSecurityTrustHtml(this.uploadedHtml);
+      };
+      reader.readAsText(file);
+    }
   
     /**
      * Handles file upload and sets the uploaded HTML content.
