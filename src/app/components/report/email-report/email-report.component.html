@@ -1,7 +1,7 @@
 <div class="container formcontainer mt-4 ">
   <div class="ml-4">
     <h2 class="text-primary" style="color: #452dd6 !important;">Generate Report</h2>
-    <p class="text-danger" *ngIf="error">• {{ error }}</p>
+    <!-- <p class="text-danger" *ngIf="error">• {{ error }}</p> -->
   </div>
   
   <div >
@@ -24,13 +24,9 @@
           </div>
           <div class="autocomplete-select">
             <label class="select-label">Status Type</label>
-            <select class="form-select form-control border-input" name="bml_status" id="bml_status" onchange="generateReportCount()">
-              <option value="" selected="">All</option>
-              <option value="bounced">Bounced</option>
-              <option value="dispatched">Dispatched</option>
-              <option value="rejected">Rejected</option>
-              <option value="sent">Sent</option>
-              <option value="skipped">Skipped</option>
+            <select class="form-select form-control border-input" name="bml_status" id="bml_status" onchange="generateReportCount()"  [(ngModel)]="selectedStatus">
+              <option value="" selected>All</option>
+              <option *ngFor="let status of statuses" [value]="status">{{status}}</option>            
             </select>
           </div>
         </div>
@@ -45,10 +41,10 @@
             <div class="form-outline datepicker" style="display: flex; align-items: center;">
               <input type="text" class="form-control" placeholder="Select Date" bsDatepicker [bsConfig]="bsConfig" [formControl]="dateStart" id="date_start" #dateStartPicker="bsDatepicker">
               <span class="input-group-text bg-light d-block">
-                  <i class="fa fa-calendar" (click)="showCalendar(dateStartPicker)"></i>
+                  <i class="fa fa-calendar" (click)="showCalendar(dateStartPicker)" style="color: #0d6efd;"></i>
               </span>
               <span class="input-group-text bg-light d-block">
-                 <i class="fa fa-refresh" (click)="clearDate(dateStart)"></i>
+                 <i class="fa fa-refresh" (click)="clearDate(dateStart)" style="color: #0d6efd;"></i>
               </span>
             </div>
           </div>
@@ -64,10 +60,10 @@
               <input type="text" class="form-control" placeholder="Select Date"
               bsDatepicker [bsConfig]="bsConfig" [formControl]="dateEnd" id="date_end" #dateEndPicker="bsDatepicker">
               <span class="input-group-text bg-light d-block">
-                <i class="fa fa-calendar" (click)="showCalendar(dateEndPicker)"></i>
+                <i class="fa fa-calendar" (click)="showCalendar(dateEndPicker)" style="color: #0d6efd;"></i>
               </span>
               <span class="input-group-text bg-light d-block">
-                  <i class="fa fa-refresh"  (click)="clearDate(dateEnd)"></i>
+                  <i class="fa fa-refresh"  (click)="clearDate(dateEnd)" style="color: #0d6efd;"></i>
               </span>
             </div>
           </div>
@@ -107,9 +103,176 @@
           </div>
         </div>
       </div>
+      <div class="row mb-3">
+        <div>
+          <span id="error_adt_0" class="errormsg"></span>
+        </div>
+        <div class="col-md-4">
+          <div class="autocomplete-select">
+            <label class="select-label">Select Search Criteria</label>
+            <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_0" id="adt_0" onchange="generateReportCount()" data-select2-id="select2-data-adt_0" tabindex="-1" aria-hidden="true">
+              <option value="" selected data-select2-id="select2-data-2-e8po">Select an Option</option>
+              <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
+                {{ option.text }}
+              </option>              
+            </select>
+          </div>
+
+        </div>
+        <div class="col-md-4">
+          <div class="form-floating">
+            <input type="text" class="form-control border-input" name="adt_value_0" id="adt_value_0" onchange="generateReportCount()"><label></label>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div>
+          <span id="error_adt_0" class="errormsg"></span>
+        </div>
+        <div class="col-md-4">
+          <div class="autocomplete-select">
+            <label class="select-label">Select Search Criteria</label>
+            <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_0" id="adt_0" onchange="generateReportCount()" data-select2-id="select2-data-adt_0" tabindex="-1" aria-hidden="true">
+              <option value="" selected data-select2-id="select2-data-2-e8po">Select an Option</option>
+              <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
+                {{ option.text }}
+              </option>              
+            </select>
+          </div>
+
+        </div>
+        <div class="col-md-4">
+          <div class="form-floating">
+            <input type="text" class="form-control border-input" name="adt_value_0" id="adt_value_0" onchange="generateReportCount()"><label></label>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div>
+          <span id="error_adt_column_0" class="errormsg"></span>
+        </div>
+        <div>
+          <span id="error_adt_column_1" class="errormsg"></span>
+        </div>
+        <div class="col-md-4">
+          <div class="autocomplete-select">
+            <label class="select-label">Select Column</label>
+            <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_column_0" id="adt_column_0" data-select2-id="select2-data-adt_column_0" tabindex="-1" aria-hidden="true">
+              <option value="" selected data-select2-id="select2-data-2-e8po">Select an option</option>
+              <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
+                {{ option.text }}
+              </option>                
+            </select>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="autocomplete-select">
+            <label class="select-label">Select Column</label>
+            <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_column_1" id="adt_column_1" data-select2-id="select2-data-adt_column_1" tabindex="-1" aria-hidden="true">
+              <option value="" selected data-select2-id="select2-data-2-e8po">Select an option</option>
+              <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
+                {{ option.text }}
+              </option>            
+            </select>
+          </div>
+        </div>
+      </div>
     <div class="d-flex gap-3 mt-4">
-      <button class="btn " style="background-color: #452dd6; color: white;">Generate summary report</button>
-      <button class="btn" style="background-color: #452dd6; color: white;">Generate report</button>
-    </div>
+      <button class="btn " style="background-color: #452dd6; color: white;" (click)="generateSummary(selectedStatus)">Generate summary report</button>
+      <button class="btn" style="background-color: #452dd6; color: white;" (click)="getReports(selectedStatus)">Generate report</button>
+      <button class="btn" style="background-color: #452dd6; color: white;" (click)="download()" *ngIf="report_generated">Download</button>
+      <!-- <span style="color: green;">{{records}}records are available</span> -->
+    </div>    
   </div>
+</div>
+
+<div class="container mt-4" *ngIf="summary_generated">
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover text-center">
+      <thead class="bg-secondary text-white">
+        <tr>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Sender Address</th>
+          <th>Total Mail Received</th>
+          <th>Mail Ignored</th>
+          <th>Mail Skipped</th>
+          <th colspan="2">Mail Sent Breakdown</th>
+          <th>Mail in Queue</th>
+          <th colspan="2">Total Mail Sent</th>
+        </tr>
+        <tr>
+          <th colspan="6"></th>
+          <th>Mail Bounced</th>
+          <th>Mail Delivered</th>
+          <th></th>
+          <th>Count</th>
+          <th>Size in MB</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let report of groupedReports">
+          <td>{{ report.start_date }}</td>
+          <td>{{ report.end_date }}</td>
+          <td>{{ report.sender_address }}</td>
+          <td>{{ report.total_mail_received }}</td>
+          <td>{{ report.mail_ignored }}</td>
+          <td>{{ report.mail_skipped }}</td>
+          <td>{{ report.mail_bounced }}</td>
+          <td>{{ report.mail_sent }}</td>
+          <td>{{ report.mail_in_queue }}</td>
+          <td><strong>{{ report.total_mail_sent_count }}</strong></td>
+          <td><strong>{{ report.total_mail_sent_size.toFixed(2) }}</strong></td>
+        </tr>
+
+        <tr class="bg-dark text-white fw-bold">
+          <td colspan="3">Total</td>
+          <td>{{ getTotal('total_mail_received') }}</td>
+          <td>{{ getTotal('mail_ignored') }}</td>
+          <td>{{ getTotal('mail_skipped') }}</td>
+          <td>{{ getTotal('mail_bounced') }}</td>
+          <td>{{ getTotal('mail_delivered') }}</td>
+          <td>{{ getTotal('mail_in_queue') }}</td>
+          <td>{{ getTotal('total_mail_sent_count') }}</td>
+          <td>{{ getTotal('total_mail_sent_size')}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+<div class="container mt-4 col-12" *ngIf="report_generated">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover text-center">
+          <thead class="bg-primary text-white">
+            <tr>
+              <th>BML ID</th>
+              <th>Status</th>
+              <th>App</th>
+              <th>Dispatched At</th>
+              <th>Sent At</th>
+              <th>Recipient</th>
+              <th>Sender</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let report of reports.slice(0)">
+              <td><strong>{{ report.bml_id }}</strong></td>
+              <td>
+                <span [style.backgroundColor]="getStatusColor(report.bml_status)" class="badge text-white">
+                  {{ report.bml_status }}
+                </span>
+              </td>
+              <td>{{ report.bml_app }}</td>
+              <td>{{ report.bml_dispatchedat }}</td>
+              <td>{{ report.bml_sentat }}</td>
+              <td>{{ report.bml_envrcpt }}</td>
+              <td>{{ report.bml_hdr_sender }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 </div>

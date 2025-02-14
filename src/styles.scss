@@ -15,24 +15,24 @@
   --ae-button-disabled-bg-color: gray;
 }
 
-*{
+* {
   font-family: "roboto";
 }
 
-.btn-color{
+.btn-color {
   background-color: #452dd6;
   color: white;
 
 }
 
-.btn-color:hover{
+.btn-color:hover {
   background-color: #2A1A83;
   color: white;
 }
 
 
-.header-color{
-  color:#452dd6;
+.header-color {
+  color: #452dd6;
 }
 
 
@@ -59,9 +59,8 @@ body {
 }
 
 
-
 .theme-dark-blue .bs-datepicker-container {
-  background-color: #a292ff !important;
+  background-color: #ffffff !important;
   /* Dark blue background */
   // color: #ffffff !important;
   /* White text */
@@ -75,17 +74,22 @@ body {
 }
 
 .theme-dark-blue .bs-datepicker-body table th {
-  color: #ffffff !important;
+  color: black !important;
+  font-weight: 500;
   /* White text for dates */
 }
 
 .bs-datepicker-body table td span.is-other-month {
-  color: #ffffff !important;
+  color: #a292ff !important;
+  font-weight: 500;
+
 }
 
 .bs-datepicker-body table td span.disabled,
 .bs-datepicker-body table td.disabled span {
-  color: #ffffff !important;
+  color: #a292ff !important;
+  font-weight: 500;
+
 }
 
 // .theme-dark-blue .bs-datepicker-body table td span {
@@ -100,6 +104,6 @@ body {
 // }
 
 .custom-today {
-  border: 4px solid red !important;
+  border: 1px solid #452dd6 !important;
   /* Red border for today's date */
 }

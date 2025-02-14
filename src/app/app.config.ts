@@ -4,8 +4,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideAnimations(), // ✅ Fix animation issue
-    importProvidersFrom(BsDatepickerModule.forRoot(), ReactiveFormsModule) ]
+    importProvidersFrom(BsDatepickerModule.forRoot(), ReactiveFormsModule), provideHttpClient() ]
 };
