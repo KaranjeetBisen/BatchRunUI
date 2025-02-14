@@ -12,8 +12,6 @@ import { FileViewer2Component } from "../../commons/file-viewer2/file-viewer2.co
 export class CreateConfigFormComponent {
 
 
-
-  
   configForm: FormGroup;
   successMessage: string = '';
   errorMessage: string = '';
@@ -27,7 +25,6 @@ export class CreateConfigFormComponent {
   columns: string[] = [];
   columnIndex: number = 0;
 
-
   constants: { name: string, value: string }[] = [];
   constantNameRegex = /^[a-zA-Z0-9\-_]+$/;
   constantValueRegex = /^[a-zA-Z0-9\-_]+$/;
@@ -36,14 +33,13 @@ export class CreateConfigFormComponent {
 
   constructor(private fb: FormBuilder) {
     this.configForm = this.fb.group({
-      configFileName: ['', Validators.required],
-      templateFileRelativePath: ['', Validators.required],
-      templateFile: [null, Validators.required],
-      from: ['', Validators.required],
-      subject: ['', Validators.required],
-      constantName: ['', [Validators.required, Validators.pattern(this.constantNameRegex)]],
-      constantValue: ['', [Validators.required, Validators.pattern(this.constantValueRegex)]]
-    
+      configFileName: [''],
+      templateFileRelativePath: [''],
+      templateFile: [null],
+      from: [''],
+      subject: [''],
+      constantName: [''],
+      constantValue: [''], // FormArray for constants
     });
   }
 
@@ -58,22 +54,6 @@ export class CreateConfigFormComponent {
       this.errorMessage = 'Please fill in all required fields correctly.';
     }
   }
-
-
-//   selectedFile: File | null = null;
-
-//   onFileSelected(event: Event): void {
-//     const inputElement = event.target as HTMLInputElement;
-//     if (inputElement.files && inputElement.files.length > 0) {
-//       this.selectedFile = inputElement.files[0]; // Store selected file
-//     }
-//   }
-
-//   isPreviewVisible: boolean = false; // Default: not visible
-
-// togglePreview() {
-//   this.isPreviewVisible = !this.isPreviewVisible;
-// }
 
 
 selectedFile: File | null = null;
@@ -165,5 +145,44 @@ removeConstant(constantName: string) {
     this.successMessage = `Constant "${constantName}" removed successfully!`;
   }
 }
+
+generateConfigFile() {
+  if (this.configForm.invalid) {
+    this.errorMessage = 'Please fill in all required fields correctly before generating the config file.';
+    console.log("Form validation failed:", this.configForm.errors);
+    return;
+  }
+
+  const configData = {
+    configFileName: this.configForm.value.configFileName,
+    templateFileRelativePath: this.configForm.value.templateFileRelativePath,
+    templateFile: this.selectedFile ? this.selectedFile.name : '',
+    from: this.configForm.value.from,
+    subject: this.configForm.value.subject,
+    columns: this.columns,
+    constants: this.constants
+  };
+
+  try {
+    const jsonString = JSON.stringify(configData, null, 2);
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${this.configForm.value.configFileName || 'config'}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+
+    this.successMessage = 'Configuration file generated successfully!';
+    this.errorMessage = ''; // Clear any previous errors
+  } catch (error) {
+    this.errorMessage = 'Error generating configuration file: ' + error;
+    console.error("Error in generateConfigFile():", error);
+  }
+}
+
 
 }
