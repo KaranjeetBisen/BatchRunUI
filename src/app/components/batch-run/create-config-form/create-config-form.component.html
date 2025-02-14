@@ -24,7 +24,7 @@
       </div>
 
       <div class="detail-fields">
-        <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="configForm">
           <!-- <input type="hidden" formControlName="appid" value="72"> -->
 
           <!-- Metadata Section -->
@@ -33,7 +33,8 @@
             <div id="namespaceColumns">
               <div *ngFor="let const of constants">
                 <label>
-                  <input type="checkbox" name="namespaceColumns" [value]="const.name" /> {{ const.name }}
+                  <input type="checkbox" (change)="toggleConstantSelection(const, $event)" />
+                  {{ const.name }}
                 </label>
               </div>
             </div>
@@ -94,6 +95,24 @@
             </div>
           </div>
 
+          <!-- reply too Fields -->
+          <div class="row g-3 mb-4">
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input class="form-control" formControlName="replyto">
+                <label class="custom-label"><span class="text-danger">*</span>Reply To:</label>
+              </div>
+              <span class="errormsg">{{ replytoError }}</span>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input class="form-control" formControlName="attachmentDirectory">
+                <label class="custom-label">Attachment Directory:</label>
+              </div>
+              <span class="errormsg">{{ attachmentDirectoryError }}</span>
+            </div>
+          </div>
+
           <!-- Namespace Section -->
           <div class="mt-4" style="background-color: #eae9ff;">
             <strong>Add Namespace</strong>
@@ -104,7 +123,8 @@
             <div id="namespaceColumns" style="margin-top: -20px;">
               <div *ngFor="let col of columns">
                 <label>
-                  <input type="checkbox" name="namespaceColumns" [value]="col" /> {{ col }}
+                  <input type="checkbox" (change)="toggleColumnSelection(col, $event)" />
+                  {{ col }}
                 </label>
               </div>
             </div>
@@ -118,18 +138,18 @@
           <div class="row g-3">
             <div class="col-md-4">
               <div class="form-floating">
-                <input type="text" formControlName="constantName" class="form-control">
+                <input type="text" #constantName  class="form-control">
                 <label class="custom-label">Tag Name</label>
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-floating">
-                <input type="text" formControlName="constantValue" class="form-control" >
+                <input type="text" #constantValue  class="form-control" >
                 <label class="custom-label" >Tag Value</label>
               </div>
             </div>
             <div class="col-md-4 mt-4">
-              <button type="button" class="btn btn-color" (click)="addConstant()">Add Tag</button>
+              <button type="button" class="btn btn-color" (click)="addConstant(constantName, constantValue)">Add Tag</button>
             </div>
           </div>
          
@@ -147,9 +167,10 @@
           <div class="row g-3 mb-2">
             <div class="col-md-4">
               <div class="form-floating"> 
-                <input type="text" formControlName="column" #columnInput class="form-control">
+                <input type="text"  #columnInput class="form-control">
                 <label class="custom-label"><span class="text-danger">*</span> Columns</label>
               </div>
+              <span class="errormsg">{{ columnError }}</span>
             </div>
             <div class="col-md-4 mt-4">
               <button type="button" class="btn btn-color" (click)="addColumn(columnInput)" >Add Columns</button>
