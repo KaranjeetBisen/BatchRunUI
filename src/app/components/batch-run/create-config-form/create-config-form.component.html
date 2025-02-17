@@ -1,5 +1,5 @@
 <div class="channel-details-page pb-3">
-  <div class="container">
+  <div >
     <!-- Message Alerts -->
     <div>
       <span *ngIf="successMessage" class="successmsg" style="color: green;">
@@ -70,6 +70,7 @@
             <div class="col-md-4" style="margin-top: 47px;">
               <button type="button" class="btn btn-color" (click)="togglePreview()" [disabled]="!selectedFile">Preview</button>
             </div>
+            <span class="errormsg" style="margin-top: 5px;">{{ templateFileError }}</span>
           </div>
 
           <!-- Pass selected file to the FileViewer2Component -->
@@ -135,7 +136,7 @@
           
 
           <!-- Tag Input Fields -->
-          <div class="row g-3">
+          <div class="row g-3 mt-2">
             <div class="col-md-4">
               <div class="form-floating">
                 <input type="text" #constantName  class="form-control">

@@ -19,18 +19,17 @@ export class FileViewer2Component {
   
     // List of predefined devices
     devices = [
-      { name: 'select Device', width: 1920, height: 1080 },
+      {name: 'Laptop', width: 1280, height: 720 },
       { name: 'iPhone 12 (390x844)', width: 390, height: 844 },
       { name: 'Galaxy S21 (360x800)', width: 360, height: 800 },
-      { name: 'Laptop (1366x768)', width: 1366, height: 768 },
       { name: 'Desktop (1920x1080)', width: 1920, height: 1080 },
       { name: 'Motorola Edge 50 Fusion (393x851)', width: 393, height: 851 }
     ];
   
     // Default styles for the preview container
     deviceStyles: any = {
-      width: '1920px',
-      height: '1080px',
+      width: '1280px',
+      height: '720px',
       border: '1px solid #ccc',
       overflow: 'hidden',
       position: 'relative',
@@ -38,8 +37,8 @@ export class FileViewer2Component {
     };
   
     // Custom dimensions for the frame
-    customWidth = 1920;
-    customHeight = 1080;
+    customWidth = 1280;
+    customHeight = 720;
   
     // Resizing logic
     resizing = false;

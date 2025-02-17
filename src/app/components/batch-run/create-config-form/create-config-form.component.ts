@@ -40,6 +40,7 @@ export class CreateConfigFormComponent {
   replytoError: string = "";
   attachmentDirectoryError: string = "";
   columnError: string = "";
+ 
 
   constructor(private fb: FormBuilder) {
     this.configForm = this.fb.group({
@@ -47,7 +48,7 @@ export class CreateConfigFormComponent {
         "",
         [Validators.required, Validators.pattern(/^[a-zA-Z0-9_\-]+$/)],
       ],
-      templateFile: [null],
+      templateFile: [ [ Validators.required]],
       templateFileRelativePath: [
         "",
         [
@@ -82,25 +83,38 @@ export class CreateConfigFormComponent {
   }
 
 
-  selectedFile: File | null = null;
-  showPreview: boolean = false; // Controls preview visibility
+selectedFile: File | null = null;
+base64File: string | null = null; // Variable to store Base64 string
+showPreview: boolean = false; // Controls preview visibility
 
-  onFileSelected(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    if (inputElement.files && inputElement.files.length > 0) {
-      const file = inputElement.files[0];
+onFileSelected(event: Event): void {
+  const inputElement = event.target as HTMLInputElement;
+  if (inputElement.files && inputElement.files.length > 0) {
+    const file = inputElement.files[0];
 
-      // Check if the selected file is an HTML file
-      if (!file.name.endsWith(".html")) {
-        this.errorMessage = "Only HTML files are allowed!";
-        this.selectedFile = null; // Reset selected file
-        return;
-      }
-
-      this.errorMessage = ""; // Clear error message
-      this.selectedFile = file; // Store valid file
+    // Check if the selected file is an HTML file
+    if (!file.name.endsWith(".html")) {
+      this.templateFileError = "Only HTML files are allowed!";
+      this.selectedFile = null; // Reset selected file
+      this.base64File = null; // Reset Base64 variable
+      return;
     }
+
+    this.templateFileError = ""; // Clear error message
+    this.selectedFile = file; // Store valid file
+
+    // Convert file to Base64
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.base64File = reader.result as string; // Store Base64 encoded file
+      console.log("Base64 Encoded File:", this.base64File);
+      this.configForm.patchValue({ templateFile: this.base64File }); // Store Base64 in form control
+
+    };
+    reader.readAsDataURL(file); // Convert file to Base64
   }
+}
+
 
   togglePreview(): void {
     if (this.selectedFile) {
@@ -166,15 +180,15 @@ export class CreateConfigFormComponent {
     const col = columnInput.value.trim();
 
     if (!col) {
-      this.errorMessage = "Column name cannot be empty!";
+      this.columnError = "Column name cannot be empty!";
       return;
     }
     if (col.length > 50) {
-      this.errorMessage = "Column name cannot be greater than 50 characters!";
+      this.columnError = "Column name cannot be greater than 50 characters!";
       return;
     }
     if (this.columns.includes(col)) {
-      this.errorMessage = "Column already exists!";
+      this.columnError = "Column already exists!";
       return;
     }
 
@@ -226,6 +240,21 @@ export class CreateConfigFormComponent {
     } else {
       this.configFileNameError = ""; // Clear error if valid
     }
+
+    // Validate subject
+    // if (this.configForm.controls["templateFile"].value.trim() === "") {
+    //   this.templateFileError = "Required";
+    // } else {
+    //   this.templateFileError = "";
+    // }
+
+    const templateFileValue = this.configForm.get('templateFile')?.value;
+
+  if (!templateFileValue || typeof templateFileValue !== 'string' || !templateFileValue.trim()) {
+    this.templateFileError = "Required";
+  } else {
+    this.templateFileError = "";
+  }
 
     // Validate templateFileRelativePath
     if (
