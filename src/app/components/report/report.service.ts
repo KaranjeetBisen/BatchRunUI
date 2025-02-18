@@ -25,4 +25,21 @@ export class ReportService {
 
     return this.http.post<any>(this.apiUrl, requestBody);
   }
+
+  fetchReports2(status: string, start_date: string, end_date: string): Observable<any> {
+    const requestBody = {
+      params: {
+        otype: "json",
+        nrec: 10
+      },
+      data: {
+        bml_app: "90",
+        bml_dispatchedat: start_date,
+        bml_sentat: end_date,
+        bml_status: status
+      }
+    };
+
+    return this.http.post<any>(this.apiUrl, requestBody);
+  }
 }

@@ -1,6 +1,6 @@
 .formcontainer {
     // width: 100% !important;
-    margin-left: 5% !important;
+    margin-left: 3% !important;
     text-align: left;
 
 }
@@ -78,5 +78,7 @@
 @media (max-width: 767px) {
     .formcontainer {
         width: 90% !important;
+        margin-left: 3% !important;
+        text-align: left;
     }
 }

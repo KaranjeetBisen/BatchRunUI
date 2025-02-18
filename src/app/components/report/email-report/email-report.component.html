@@ -1,246 +1,310 @@
 <div class="container formcontainer mt-4 ">
   <div class="ml-4">
     <h2 class="text-primary" style="color: #452dd6 !important;">Generate Report</h2>
-    <!-- <p class="text-danger" *ngIf="error">• {{ error }}</p> -->
+    <p class="text-danger" *ngIf="error">• {{ error }}</p>
   </div>
   
   <div >
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <div class="autocomplete-select">
-            <label class="select-label">Select Application</label>
-            <select class="form-select form-control border-input" name="report_appid" id="report_appid" onchange="generateReportCount()">
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <div class="autocomplete-select">
+          <label class="select-label">Select Application</label>
+            <select class="form-select form-control border-input" name="report_appid" id="report_appid" >
               <option value="72" selected="">
                 remiges_test
               </option>
-              <option value="all">All My Apps</option>
-            </select>
-          </div>
+            <option value="all">All My Apps</option>
+          </select>
         </div>
-
-        <div class="col-md-4">
-          <div>
-            <span id="error_bml_status" class="errormsg"></span>
-          </div>
-          <div class="autocomplete-select">
-            <label class="select-label">Status Type</label>
-            <select class="form-select form-control border-input" name="bml_status" id="bml_status" onchange="generateReportCount()"  [(ngModel)]="selectedStatus">
+      </div>
+  
+      <div class="col-md-4">
+        <div>
+          <span id="error_bml_status" class="errormsg"></span>
+        </div>
+        <div class="autocomplete-select">
+          <label class="select-label">Status Type</label>
+            <select class="form-select form-control border-input" name="bml_status" id="bml_status" [(ngModel)]="selectedStatus">
               <option value="" selected>All</option>
-              <option *ngFor="let status of statuses" [value]="status">{{status}}</option>            
-            </select>
+            <option *ngFor="let status of statuses" [value]="status">{{status}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <div>
+          <span id="error_date_start" class="errormsg"></span>
+        </div>
+        <div class="">
+          <label class="select-label">Start Date</label>
+          <div class="form-outline datepicker" style="display: flex; align-items: center;">
+              <input type="text" class="form-control" autocomplete="off" placeholder="Select Date" bsDatepicker [bsConfig]="bsConfig" [formControl]="dateStart" id="date_start" #dateStartPicker="bsDatepicker">
+            <span class="input-group-text bg-light d-block">
+              <i class="fa fa-calendar" (click)="showCalendar(dateStartPicker)" style="color: #0d6efd;"></i>
+            </span>
+            <span class="input-group-text bg-light d-block">
+                 <i class="fa fa-refresh" (click)="clearDate(dateStart)" style="color: #0d6efd;"></i>
+            </span>
           </div>
         </div>
       </div>
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <div>
-            <span id="error_date_start" class="errormsg"></span>
-          </div>
-          <div class="">
-            <label class="select-label">Start Date</label>
-            <div class="form-outline datepicker" style="display: flex; align-items: center;">
-              <input type="text" class="form-control" placeholder="Select Date" bsDatepicker [bsConfig]="bsConfig" [formControl]="dateStart" id="date_start" #dateStartPicker="bsDatepicker">
-              <span class="input-group-text bg-light d-block">
-                  <i class="fa fa-calendar" (click)="showCalendar(dateStartPicker)" style="color: #0d6efd;"></i>
-              </span>
-              <span class="input-group-text bg-light d-block">
-                 <i class="fa fa-refresh" (click)="clearDate(dateStart)" style="color: #0d6efd;"></i>
-              </span>
-            </div>
-          </div>
+     
+      <div class="col-md-4">
+        <div>
+          <span id="error_date_end" class="errormsg"></span>
         </div>
-        
-        <div class="col-md-4">
-          <div>
-            <span id="error_date_end" class="errormsg"></span>
-          </div>
           <div class="">
-            <label class="select-label">End Date</label>
+        <label class="select-label">End Date</label>
             <div class="form-outline datepicker" style="display: flex; align-items: center;">
-              <input type="text" class="form-control" placeholder="Select Date"
+              <input type="text" class="form-control" placeholder="Select Date" autocomplete="off"
               bsDatepicker [bsConfig]="bsConfig" [formControl]="dateEnd" id="date_end" #dateEndPicker="bsDatepicker">
-              <span class="input-group-text bg-light d-block">
-                <i class="fa fa-calendar" (click)="showCalendar(dateEndPicker)" style="color: #0d6efd;"></i>
-              </span>
-              <span class="input-group-text bg-light d-block">
-                  <i class="fa fa-refresh"  (click)="clearDate(dateEnd)" style="color: #0d6efd;"></i>
-              </span>
-            </div>
-          </div>
+          <span class="input-group-text bg-light d-block">
+            <i class="fa fa-calendar" (click)="showCalendar(dateEndPicker)" style="color: #0d6efd;"></i>
+          </span>
+          <span class="input-group-text bg-light d-block" (click)="clearDate(dateEnd)">
+                  <i class="fa fa-refresh" style="color: #0d6efd;"></i>
+          </span>
         </div>
+      </div>
+    </div>
       </div>     
-      <div class="row mb-3">
+    <div class="row mb-3">
 
-        <div class="col-md-4">
+      <div class="col-md-4">
           <div>
             <span id="error_bml_input_envsender" class="errormsg"></span>
           </div>
-          <div class="form-floating">
-            <input type="text" placeholder="Sender Address" class="form-control border-input" name="bml_input_envsender" id="bml_input_envsender" onchange="generateReportCount()"><label>Sender
+        <div class="form-floating">
+            <input type="text" placeholder="Sender Address" class="form-control border-input" name="bml_input_envsender" id="bml_input_envsender" ><label>Sender
               Address</label>
           </div>
         </div>
 
-
-        <div class="col-md-4">
+  
+      <div class="col-md-4">
           <div>
             <span id="error_bml_hdr_sender" class="errormsg"></span>
           </div>
-          <div class="form-floating">
-            <input type="text" placeholder="Header Sender" class="form-control border-input" name="bml_hdr_sender" id="bml_hdr_sender" onchange="generateReportCount()"><label>Header
+        <div class="form-floating">
+            <input type="text" placeholder="Header Sender" class="form-control border-input" name="bml_hdr_sender" id="bml_hdr_sender" ><label>Header
               Sender</label>
           </div>
         </div>
       </div>
-      <div class="row mb-3">
-        <div class="col-md-4">
+    <div class="row mb-3">
+      <div class="col-md-4">
           <div>
             <span id="error_bml_envrcpt" class="errormsg"></span>
           </div>
-          <div class="form-floating">
-            <input type="text" placeholder="Recipient Address" class="form-control border-input" name="bml_envrcpt" id="bml_envrcpt" onchange="generateReportCount()"><label>Recipient
+        <div class="form-floating">
+            <input type="text" placeholder="Recipient Address" class="form-control border-input" name="bml_envrcpt" id="bml_envrcpt" ><label>Recipient
               Address</label>
           </div>
         </div>
       </div>
-      <div class="row mb-3">
+    <div class="row mb-3">
         <div>
           <span id="error_adt_0" class="errormsg"></span>
         </div>
         <div class="col-md-4">
           <div class="autocomplete-select">
             <label class="select-label">Select Search Criteria</label>
-            <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_0" id="adt_0" onchange="generateReportCount()" data-select2-id="select2-data-adt_0" tabindex="-1" aria-hidden="true">
+            <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_0" id="adt_0"  data-select2-id="select2-data-adt_0" tabindex="-1" aria-hidden="true">
               <option value="" selected data-select2-id="select2-data-2-e8po">Select an Option</option>
               <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
                 {{ option.text }}
-              </option>              
+              </option>
             </select>
           </div>
 
         </div>
         <div class="col-md-4">
           <div class="form-floating">
-            <input type="text" class="form-control border-input" name="adt_value_0" id="adt_value_0" onchange="generateReportCount()"><label></label>
+            <input type="text" class="form-control border-input" name="adt_value_0" id="adt_value_0" ><label></label>
           </div>
         </div>
-      </div>
-      <div class="row mb-3">
+    </div>
+    <div class="row mb-3">
         <div>
           <span id="error_adt_0" class="errormsg"></span>
-        </div>
-        <div class="col-md-4">
-          <div class="autocomplete-select">
+      </div>
+      <div class="col-md-4">
+        <div class="autocomplete-select">
             <label class="select-label">Select Search Criteria</label>
-            <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_0" id="adt_0" onchange="generateReportCount()" data-select2-id="select2-data-adt_0" tabindex="-1" aria-hidden="true">
+            <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_0" id="adt_0"  data-select2-id="select2-data-adt_0" tabindex="-1" aria-hidden="true">
               <option value="" selected data-select2-id="select2-data-2-e8po">Select an Option</option>
-              <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
-                {{ option.text }}
-              </option>              
-            </select>
-          </div>
-
+            <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
+              {{ option.text }}
+            </option>                
+          </select>
         </div>
-        <div class="col-md-4">
+
+      </div>  
+      <div class="col-md-4">
           <div class="form-floating">
-            <input type="text" class="form-control border-input" name="adt_value_0" id="adt_value_0" onchange="generateReportCount()"><label></label>
+            <input type="text" class="form-control border-input" name="adt_value_0" id="adt_value_0" ><label></label>
           </div>
         </div>
       </div>
-      <div class="row mb-3">
-        <div>
-          <span id="error_adt_column_0" class="errormsg"></span>
+    <div class="row mb-3">
+      <div>
+        <span id="error_adt_column_0" class="errormsg"></span>
+      </div>
+      <div>
+        <span id="error_adt_column_1" class="errormsg"></span>
+      </div>
+      <div class="col-md-4">
+        <div class="autocomplete-select">
+          <label class="select-label">Select Column</label>
+          <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_column_0" id="adt_column_0" data-select2-id="select2-data-adt_column_0" tabindex="-1" aria-hidden="true">
+            <option value="" selected data-select2-id="select2-data-2-e8po">Select an option</option>
+            <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
+              {{ option.text }}
+            </option>                
+          </select>
         </div>
-        <div>
-          <span id="error_adt_column_1" class="errormsg"></span>
-        </div>
-        <div class="col-md-4">
-          <div class="autocomplete-select">
-            <label class="select-label">Select Column</label>
-            <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_column_0" id="adt_column_0" data-select2-id="select2-data-adt_column_0" tabindex="-1" aria-hidden="true">
-              <option value="" selected data-select2-id="select2-data-2-e8po">Select an option</option>
-              <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
-                {{ option.text }}
-              </option>                
-            </select>
-          </div>
-        </div>
+      </div>  
 
-        <div class="col-md-4">
-          <div class="autocomplete-select">
-            <label class="select-label">Select Column</label>
-            <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_column_1" id="adt_column_1" data-select2-id="select2-data-adt_column_1" tabindex="-1" aria-hidden="true">
-              <option value="" selected data-select2-id="select2-data-2-e8po">Select an option</option>
-              <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
-                {{ option.text }}
-              </option>            
-            </select>
-          </div>
+      <div class="col-md-4">
+        <div class="autocomplete-select">
+          <label class="select-label">Select Column</label>
+          <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_column_1" id="adt_column_1" data-select2-id="select2-data-adt_column_1" tabindex="-1" aria-hidden="true">
+            <option value="" selected data-select2-id="select2-data-2-e8po">Select an option</option>
+            <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
+              {{ option.text }}
+            </option>            
+          </select>
         </div>
       </div>
+    </div>
+
+    <div class="row mb-3">
+      <div>
+        <span id="error_adt_column_0" class="errormsg"></span>
+      </div>
+      <div>
+        <span id="error_adt_column_1" class="errormsg"></span>
+      </div>
+      <div class="col-md-4">
+        <div class="autocomplete-select">
+          <label class="select-label">Select Column</label>
+          <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_column_0" id="adt_column_0" data-select2-id="select2-data-adt_column_0" tabindex="-1" aria-hidden="true">
+            <option value="" selected data-select2-id="select2-data-2-e8po">Select an option</option>
+            <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
+              {{ option.text }}
+            </option>                
+          </select>
+        </div>
+      </div>  
+
+      <div class="col-md-4">
+        <div class="autocomplete-select">
+          <label class="select-label">Select Column</label>
+          <select class="select2 form-select form-control border-input select2-hidden-accessible" name="adt_column_1" id="adt_column_1" data-select2-id="select2-data-adt_column_1" tabindex="-1" aria-hidden="true">
+            <option value="" selected data-select2-id="select2-data-2-e8po">Select an option</option>
+            <option *ngFor="let option of options;" [value]="option.value" [attr.data-select2-id]="'select2-data-' + option.value">
+              {{ option.text }}
+            </option>            
+          </select>
+        </div>
+      </div>
+    </div>
     <div class="d-flex gap-3 mt-4">
       <button class="btn " style="background-color: #452dd6; color: white;" (click)="generateSummary(selectedStatus)">Generate summary report</button>
       <button class="btn" style="background-color: #452dd6; color: white;" (click)="getReports(selectedStatus)">Generate report</button>
       <button class="btn" style="background-color: #452dd6; color: white;" (click)="download()" *ngIf="report_generated">Download</button>
-      <!-- <span style="color: green;">{{records}}records are available</span> -->
-    </div>    
+      <span style="color: green;">{{records}} records are available</span>
+    </div>
   </div>
 </div>
 
 <div class="container mt-4" *ngIf="summary_generated">
-  <div class="table-responsive">
-    <table class="table table-bordered table-striped table-hover text-center">
-      <thead class="bg-secondary text-white">
-        <tr>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Sender Address</th>
-          <th>Total Mail Received</th>
-          <th>Mail Ignored</th>
-          <th>Mail Skipped</th>
-          <th colspan="2">Mail Sent Breakdown</th>
-          <th>Mail in Queue</th>
-          <th colspan="2">Total Mail Sent</th>
-        </tr>
-        <tr>
-          <th colspan="6"></th>
-          <th>Mail Bounced</th>
-          <th>Mail Delivered</th>
-          <th></th>
-          <th>Count</th>
-          <th>Size in MB</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let report of groupedReports">
-          <td>{{ report.start_date }}</td>
-          <td>{{ report.end_date }}</td>
-          <td>{{ report.sender_address }}</td>
-          <td>{{ report.total_mail_received }}</td>
-          <td>{{ report.mail_ignored }}</td>
-          <td>{{ report.mail_skipped }}</td>
-          <td>{{ report.mail_bounced }}</td>
-          <td>{{ report.mail_sent }}</td>
-          <td>{{ report.mail_in_queue }}</td>
-          <td><strong>{{ report.total_mail_sent_count }}</strong></td>
-          <td><strong>{{ report.total_mail_sent_size.toFixed(2) }}</strong></td>
-        </tr>
+  <!-- Tabs -->
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a class="nav-link active fw-bold" id="table-tab" data-bs-toggle="tab" href="#table" role="tab" 
+       aria-controls="table" aria-selected="true">
+      📊 Report Table
+    </a>
+  </li>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link fw-bold" id="chart-tab" data-bs-toggle="tab" href="#chart" role="tab" 
+       aria-controls="chart" aria-selected="false">
+      📈 Mail Distribution
+    </a>
+  </li>
+</ul>
 
-        <tr class="bg-dark text-white fw-bold">
-          <td colspan="3">Total</td>
-          <td>{{ getTotal('total_mail_received') }}</td>
-          <td>{{ getTotal('mail_ignored') }}</td>
-          <td>{{ getTotal('mail_skipped') }}</td>
-          <td>{{ getTotal('mail_bounced') }}</td>
-          <td>{{ getTotal('mail_delivered') }}</td>
-          <td>{{ getTotal('mail_in_queue') }}</td>
-          <td>{{ getTotal('total_mail_sent_count') }}</td>
-          <td>{{ getTotal('total_mail_sent_size')}}</td>
-        </tr>
-      </tbody>
-    </table>
+<!-- Tab Content -->
+<div class="tab-content mt-3" id="myTabContent">
+  
+  <!-- Table Tab -->
+  <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="table-tab">
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped table-hover text-center shadow">
+        <thead class="bg-dark text-white">
+          <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Sender Address</th>
+            <th>Total Mail Received</th>
+            <th>Mail Ignored</th>
+            <th>Mail Skipped</th>
+            <th colspan="2">Mail Sent Breakdown</th>
+            <th>Mail in Queue</th>
+            <th colspan="2">Total Mail Sent</th>
+          </tr>
+          <tr>
+            <th colspan="6"></th>
+            <th>Mail Bounced</th>
+            <th>Mail Delivered</th>
+            <th></th>
+            <th>Count</th>
+            <th>Size in MB</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of groupedReports">
+            <td>{{ report.start_date }}</td>
+            <td>{{ report.end_date }}</td>
+            <td class="text-primary fw-bold">{{ report.sender_address }}</td>
+            <td class="bg-light">{{ report.total_mail_received }}</td>
+            <td>{{ report.mail_ignored }}</td>
+            <td>{{ report.mail_skipped }}</td>
+            <td class="text-danger">{{ report.mail_bounced }}</td>
+            <td class="text-success">{{ report.mail_sent }}</td>
+            <td>{{ report.mail_in_queue }}</td>
+            <td><strong>{{ report.total_mail_sent_count }}</strong></td>
+            <td><strong>{{ report.total_mail_sent_size.toFixed(2) }}</strong></td>
+          </tr>
+
+          <tr class="bg-secondary text-white fw-bold">
+            <td colspan="3">Total</td>
+            <td>{{ getTotal('total_mail_received') }}</td>
+            <td>{{ getTotal('mail_ignored') }}</td>
+            <td>{{ getTotal('mail_skipped') }}</td>
+            <td>{{ getTotal('mail_bounced') }}</td>
+            <td>{{ getTotal('mail_delivered') }}</td>
+            <td>{{ getTotal('mail_in_queue') }}</td>
+            <td>{{ getTotal('total_mail_sent_count') }}</td>
+            <td>{{ getTotal('total_mail_sent_size') }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Chart Tab -->
+  <div class="tab-pane fade" id="chart" role="tabpanel" aria-labelledby="chart-tab">
+    <div class="chart-container p-3 shadow-lg rounded bg-white">
+      <app-dashboard [maildata]="groupedReports"></app-dashboard>
+    </div>
   </div>
 </div>
+
+</div>
+
 
 
 
@@ -259,7 +323,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let report of reports.slice(0)">
+            <tr *ngFor="let report of reports">
               <td><strong>{{ report.bml_id }}</strong></td>
               <td>
                 <span [style.backgroundColor]="getStatusColor(report.bml_status)" class="badge text-white">

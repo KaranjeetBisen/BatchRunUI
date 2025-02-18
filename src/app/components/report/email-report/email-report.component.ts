@@ -1,30 +1,33 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, DoCheck, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { BsDatepickerConfig, BsDatepickerDirective, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ReportService } from '../report.service';
 import JSZip from 'jszip'; 
 import { saveAs } from 'file-saver';
 import { ReportUtilsService } from '../report-utils.service';
+import { DashboardComponent } from '../dashboard/dashboard.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @Component({
   selector: 'app-email-report',
-  imports: [NgIf, NgFor,ReactiveFormsModule, BsDatepickerModule, FormsModule],
+  imports: [NgIf, NgFor,ReactiveFormsModule, BsDatepickerModule, FormsModule, DashboardComponent, NgxEchartsModule],
   templateUrl: './email-report.component.html',
   styleUrl: './email-report.component.scss'
 })
-export class EmailReportComponent {
+export class EmailReportComponent implements DoCheck {
   error: string = "";
-
-  dateStart = new FormControl('');
-  dateEnd = new FormControl('');
+  dateStart = new FormControl('', [Validators.required, this.dateValidator.bind(this)]);
+  dateEnd = new FormControl('', [Validators.required, this.dateValidator.bind(this)]);
+  
   reports: any[] = [];
   groupedReports: any[] = [];
   statuses: string[] = ["bounced", "dispatched", "rejected", "sent", "skipped"];
   selectedStatus: string = '';
-  records: string = '';
+  records: number = 0;
   report_generated = false;
   summary_generated = false;
+  
   options = [
     { value: 'adt_accno', text: 'adt_accno' },
     { value: 'adt_accno1', text: 'adt_accno1' },
@@ -32,10 +35,6 @@ export class EmailReportComponent {
     { value: 'adt_accno3', text: 'adt_accno3' },
     { value: 'adt_accno4', text: 'adt_accno4' }
   ];
-
-  // validateDate(startDate){
-
-  // }
 
   bsConfig: Partial<BsDatepickerConfig> = {
     containerClass: 'theme-dark-blue',  // Change theme (use 'theme-dark-blue', 'theme-red', etc.)
@@ -49,11 +48,39 @@ export class EmailReportComponent {
 
   constructor(private emailReportService: ReportService, private reportUtils: ReportUtilsService) {}
 
+  ngDoCheck(): void {
+    const newRecordCount = this.reports.length;
+    if (newRecordCount !== this.records) {
+      this.records = newRecordCount;
+      console.log("The Records are " + this.records);
+    }
+  }
+
+  dateValidator(control: AbstractControl): ValidationErrors | null {  
+    const start = this.dateStart?.value;
+    const end = this.dateEnd?.value;
+  
+    if (!start || !end) {
+      return null;  // Skip validation if either field is empty
+    }
+  
+    // Check if start date is later than end date, or end date is earlier than start date
+    if (new Date(start) > new Date(end)) {
+      this.error = "StartDate must be befor EndDate"
+      return { dateRangeInvalid: true }; // Error if dateStart is after dateEnd
+    }
+    else{
+      this.error = "";
+    }
+    return null;
+  }
+
   getReports(status: string){
     let allReports: any[] = [];
     let completedRequests = 0;
     this.report_generated = true;
     this.summary_generated = false;
+
     if (status === ""){
       this.reports = [];
       this.statuses.forEach((status) => {
@@ -64,6 +91,7 @@ export class EmailReportComponent {
   
             if (completedRequests === this.statuses.length) {
               this.reports = allReports;
+              this.error = '';
             }
           },
           error: (err) => {
@@ -75,7 +103,15 @@ export class EmailReportComponent {
     }
     else{
       this.reports = [];
-      this.reports = this.reportUtils.fetchReports(status);
+      this.emailReportService.fetchReports2(status,this.dateStart.value as string,this.dateEnd.value as string).subscribe({
+        next: (response) => {
+         this.reports = response.response.docs;
+        },
+        error: (err) => {
+          console.error("API Error:", err);
+          this.error = "Failed to fetch reports.";
+        }
+      });
     }
   }
 
@@ -159,22 +195,22 @@ export class EmailReportComponent {
       groupedReport.mail_sent += report.bml_status === "sent" ? 1 : 0;
       groupedReport.mail_bounced += report.bml_status === "bounced" ? 1 : 0;
       groupedReport.mail_delivered += report.bml_status === "delivered" ? 1 : 0;
-      groupedReport.mail_in_queue += 1;
+      groupedReport.mail_in_queue += 0;
       groupedReport.total_mail_sent_count += 1;
       console.log(report.size_in_mb);
       groupedReport.total_mail_sent_size += parseFloat(report.bml_msgsize) || 0;
     });
 
     this.groupedReports = Array.from(groupedData.values());
+    console.log(this.groupedReports);
   }
 
   getTotal(column: string): string {
     return this.groupedReports
     .reduce((sum, report) => sum + (report[column] || 0), 0)
     .toFixed(2);
-  }
-  
-  
+  }  
+    
   generateSummary(status: string) {
     this.summary_generated = true;
     this.report_generated = false;
@@ -207,7 +243,6 @@ export class EmailReportComponent {
       default: return 'lightgray';
     }
   }
-  
 
 }
 
