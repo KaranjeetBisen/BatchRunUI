@@ -4,7 +4,6 @@
     position: fixed;
     top: 0;
     left: -250px;
-    background-color: #1f1f38;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     transition: left 0.3s ease;
     z-index: 1050;
@@ -22,7 +21,5 @@
   }
   
   .btn-block {
-    color: white;
-    background-color: #452dd6;
     width: 90%;
   }

@@ -16,23 +16,28 @@
 }
 
 * {
-  font-family: "roboto";
+  font-family: var(--ui-font);
 }
 
+
 .btn-color {
-  background-color: #452dd6;
-  color: white;
+  background-color: var(--button-color);
+  color: var(--button-text-color);
 
 }
 
 .btn-color:hover {
-  background-color: #2A1A83;
-  color: white;
+  background-color: var(--button-hover-color);
+  color: var(--button-hover-text-color);
 }
 
 
 .header-color {
   color: #452dd6;
+}
+
+.sidebar-bg-color{
+  background-color: var(--sidebar-bg-color);
 }
 
 
