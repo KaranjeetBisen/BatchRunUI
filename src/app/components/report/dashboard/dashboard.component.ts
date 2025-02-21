@@ -1,6 +1,6 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 import { NgxEchartsDirective } from 'ngx-echarts';
-import { ReportDashboardService } from '../report-dashboard.service';
+import { ReportDashboardService } from '../services/report-dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +10,7 @@ import { ReportDashboardService } from '../report-dashboard.service';
 })
 export class DashboardComponent {
   @Input() maildata: any[] = []; // Change to array instead of Map
-  chartOptions: any;
+  chartOptions: any[] = [];
 
   constructor(private dashboardService: ReportDashboardService) { }
 
@@ -21,6 +21,7 @@ export class DashboardComponent {
   }
 
   updateChart() {
-   this.chartOptions = this.dashboardService.plotPie(this.maildata);
+   this.chartOptions.splice(0,1,this.dashboardService.plotPie(this.maildata));
+   this.chartOptions.splice(1,1,this.dashboardService.plotBar(this.maildata));
   }
 }

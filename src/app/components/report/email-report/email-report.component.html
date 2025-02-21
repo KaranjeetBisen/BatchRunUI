@@ -225,13 +225,13 @@
   <li class="nav-item" role="presentation">
     <a class="nav-link active fw-bold" id="table-tab" data-bs-toggle="tab" href="#table" role="tab" 
        aria-controls="table" aria-selected="true">
-      📊 Report Table
+      Report Table
     </a>
   </li>
   <li class="nav-item" role="presentation">
     <a class="nav-link fw-bold" id="chart-tab" data-bs-toggle="tab" href="#chart" role="tab" 
        aria-controls="chart" aria-selected="false">
-      📈 Mail Distribution
+      Mail Distribution
     </a>
   </li>
 </ul>
@@ -241,7 +241,7 @@
   
   <!-- Table Tab -->
   <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="table-tab">
-    <div class="table-responsive">
+    <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
       <table class="table table-bordered table-striped table-hover text-center shadow">
         <thead class="bg-dark text-white">
           <tr>
@@ -309,34 +309,34 @@
 
 
 <div class="container mt-4 col-12" *ngIf="report_generated">
-      <div class="table-responsive">
-        <table class="table table-bordered table-striped table-hover text-center">
-          <thead class="bg-primary text-white">
-            <tr>
-              <th>BML ID</th>
-              <th>Status</th>
-              <th>App</th>
-              <th>Dispatched At</th>
-              <th>Sent At</th>
-              <th>Recipient</th>
-              <th>Sender</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let report of reports">
-              <td><strong>{{ report.bml_id }}</strong></td>
-              <td>
-                <span [style.backgroundColor]="getStatusColor(report.bml_status)" class="badge text-white">
-                  {{ report.bml_status }}
-                </span>
-              </td>
-              <td>{{ report.bml_app }}</td>
-              <td>{{ report.bml_dispatchedat }}</td>
-              <td>{{ report.bml_sentat }}</td>
-              <td>{{ report.bml_envrcpt }}</td>
-              <td>{{ report.bml_hdr_sender }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+    <table class="table table-bordered table-striped table-hover text-center">
+      <thead class="bg-primary text-white">
+        <tr>
+          <th>BML ID</th>
+          <th>Status</th>
+          <th>App</th>
+          <th>Dispatched At</th>
+          <th>Size in MB</th>
+          <th>Recipient</th>
+          <th>Sender</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let report of reports">
+          <td><strong>{{ report.bml_id }}</strong></td>
+          <td>
+            <span [style.backgroundColor]="getStatusColor(report.bml_status)" class="badge text-white">
+              {{ report.bml_status }}
+            </span>
+          </td>
+          <td>{{ report.bml_app }}</td>
+          <td>{{ report.bml_dispatchedat }}</td>
+          <td>{{ report.bml_msgsize }}</td>
+          <td>{{ report.bml_envrcpt }}</td>
+          <td>{{ report.bml_hdr_sender }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -1,11 +1,11 @@
-import { NgFor, NgIf } from '@angular/common';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { Component, DoCheck, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { BsDatepickerConfig, BsDatepickerDirective, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { ReportService } from '../report.service';
+import { ReportService } from '../services/report.service';
 import JSZip from 'jszip'; 
 import { saveAs } from 'file-saver';
-import { ReportUtilsService } from '../report-utils.service';
+import { ReportUtilsService } from '../services/report-utils.service';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 
@@ -19,7 +19,7 @@ export class EmailReportComponent implements DoCheck {
   error: string = "";
   dateStart = new FormControl('', [Validators.required, this.dateValidator.bind(this)]);
   dateEnd = new FormControl('', [Validators.required, this.dateValidator.bind(this)]);
-  
+
   reports: any[] = [];
   groupedReports: any[] = [];
   statuses: string[] = ["bounced", "dispatched", "rejected", "sent", "skipped"];
@@ -46,7 +46,18 @@ export class EmailReportComponent implements DoCheck {
     customTodayClass: 'custom-today' // Custom class for today’s date
   };
 
-  constructor(private emailReportService: ReportService, private reportUtils: ReportUtilsService) {}
+  constructor(private emailReportService: ReportService, private reportUtils: ReportUtilsService, private datePipe: DatePipe) {}
+
+
+  private formatDate(date: any): string {
+    if (!date) return 'NAN'; // ✅ Return empty string instead of null
+  
+    const parsedDate = new Date(date);
+    console.log("parsedDate"+parsedDate);
+    if (isNaN(parsedDate.getTime())) return 'NAN'; // ✅ Return empty string if invalid date
+    return parsedDate.toISOString().split('T')[0]; // Extract YYYY-MM-DD part
+  }
+
 
   ngDoCheck(): void {
     const newRecordCount = this.reports.length;
@@ -80,30 +91,41 @@ export class EmailReportComponent implements DoCheck {
     let completedRequests = 0;
     this.report_generated = true;
     this.summary_generated = false;
-
+    const formattedStartDate = this.formatDate(this.dateStart.value);
+    const formattedEndDate = this.formatDate(this.dateEnd.value);
     if (status === ""){
       this.reports = [];
-      this.statuses.forEach((status) => {
-        this.emailReportService.fetchReports(status).subscribe({
-          next: (response) => {
-            allReports = allReports.concat(response.response.docs);
-            completedRequests++;
-  
-            if (completedRequests === this.statuses.length) {
-              this.reports = allReports;
-              this.error = '';
-            }
-          },
-          error: (err) => {
-            console.error("API Error:", err);
-            this.error = "Failed to fetch reports.";
-          }
-        });
+      status = `${this.statuses[0]} & ${this.statuses[3]}`
+      this.emailReportService.fetchReports(status,formattedStartDate,formattedEndDate).subscribe({
+        next: (response) => {
+         this.reports = response.response.docs;
+        },
+        error: (err) => {
+          console.error("API Error:", err);
+          this.error = "Failed to fetch reports.";
+        }
       });
+      // this.statuses.forEach((status) => {
+      //   this.emailReportService.fetchReports(status,formattedStartDate,formattedEndDate).subscribe({
+      //     next: (response) => {
+      //       allReports = allReports.concat(response.response.docs);
+      //       completedRequests++;
+  
+      //       if (completedRequests === this.statuses.length) {
+      //         this.reports = allReports;
+      //         this.error = '';
+      //       }
+      //     },
+      //     error: (err) => {
+      //       console.error("API Error:", err);
+      //       this.error = "Failed to fetch reports.";
+      //     }
+      //   });
+      // });
     }
     else{
       this.reports = [];
-      this.emailReportService.fetchReports2(status,this.dateStart.value as string,this.dateEnd.value as string).subscribe({
+      this.emailReportService.fetchReports(status,formattedStartDate,formattedEndDate).subscribe({
         next: (response) => {
          this.reports = response.response.docs;
         },
@@ -131,7 +153,9 @@ export class EmailReportComponent implements DoCheck {
   
 
   fetchReportSummary(status: string) {
-    this.emailReportService.fetchReports(status).subscribe({
+    const formattedStartDate = this.formatDate(this.dateStart.value);
+    const formattedEndDate = this.formatDate(this.dateEnd.value);
+    this.emailReportService.fetchReports(status,formattedStartDate,formattedEndDate).subscribe({
       next: (response) => {
         this.reports = response.response.docs;
         this.groupReportsBySender(); // Group data after fetching
@@ -146,64 +170,102 @@ export class EmailReportComponent implements DoCheck {
   fetchSummaryForEach() {
     let allReports: any[] = [];
     let completedRequests = 0;
+    const formattedStartDate = this.formatDate(this.dateStart.value);
+    const formattedEndDate = this.formatDate(this.dateEnd.value);
 
-    this.statuses.forEach((status) => {
-      this.emailReportService.fetchReports(status).subscribe({
-        next: (response) => {
-          allReports = allReports.concat(response.response.docs);
-          completedRequests++;
-
-          if (completedRequests === this.statuses.length) {
-            this.reports = allReports;
-            this.groupReportsBySender();
-          }
-        },
-        error: (err) => {
-          console.error("API Error:", err);
-          this.error = "Failed to fetch reports.";
-        }
-      });
+    let status = `${this.statuses[0]} & ${this.statuses[3]}`
+    this.emailReportService.fetchReports(status,formattedStartDate,formattedEndDate).subscribe({
+      next: (response) => {
+       this.reports = response.response.docs;
+       this.groupReportsBySender();
+      },
+      error: (err) => {
+        console.error("API Error:", err);
+        this.error = "Failed to fetch reports.";
+      }
     });
+    // this.statuses.forEach((status) => {
+    //   this.emailReportService.fetchReports(status,formattedStartDate,formattedEndDate).subscribe({
+    //     next: (response) => {
+    //       allReports = allReports.concat(response.response.docs);
+    //       completedRequests++;
+
+    //       if (completedRequests === this.statuses.length) {
+    //         this.reports = allReports;
+    //         this.groupReportsBySender();
+    //       }
+    //     },
+    //     error: (err) => {
+    //       console.error("API Error:", err);
+    //       this.error = "Failed to fetch reports.";
+    //     }
+    //   });
+    // });
   }
 
   groupReportsBySender() {
     const groupedData = new Map();
 
     this.reports.forEach(report => {
-      const sender = report.bml_hdr_sender;
-      if (!groupedData.has(sender)) {
-        groupedData.set(sender, {
-          sender_address: sender,
-          start_date: report.bml_dispatchedat,
-          end_date: report.bml_sentat,
-          total_mail_received: 0,
-          mail_ignored: 0,
-          mail_skipped: 0,
-          mail_sent: 0,
-          mail_bounced: 0,
-          mail_delivered: 0,
-          mail_in_queue: 0,
-          total_mail_sent_count: 0,
-          total_mail_sent_size: 0,
-        });
-      }
+        const sender = report.bml_hdr_sender;
+        if (!groupedData.has(sender)) {
+            groupedData.set(sender, {
+                sender_address: sender,
+                start_date: this.formatDate(report.bml_dispatchedat),
+                end_date: this.formatDate(report.bml_sentat), // Might be null
+                total_mail_received: 0,
+                mail_ignored: 0,
+                mail_skipped: 0,
+                mail_sent: 0,
+                mail_bounced: 0,
+                mail_delivered: 0,
+                mail_in_queue: 0,
+                total_mail_sent_count: 0,
+                total_mail_sent_size: 0,
+            });
+        }
 
-      let groupedReport = groupedData.get(sender);
-      groupedReport.total_mail_received += 1;
-      groupedReport.mail_ignored += report.bml_status === "rejected" ? 1 : 0;
-      groupedReport.mail_skipped += report.bml_status === "skipped" ? 1 : 0;
-      groupedReport.mail_sent += report.bml_status === "sent" ? 1 : 0;
-      groupedReport.mail_bounced += report.bml_status === "bounced" ? 1 : 0;
-      groupedReport.mail_delivered += report.bml_status === "delivered" ? 1 : 0;
-      groupedReport.mail_in_queue += 0;
-      groupedReport.total_mail_sent_count += 1;
-      console.log(report.size_in_mb);
-      groupedReport.total_mail_sent_size += parseFloat(report.bml_msgsize) || 0;
+        let groupedReport = groupedData.get(sender);
+
+        // Update start_date only if it's earlier
+        const reportDispatchDate = new Date(report.bml_dispatchedat);
+        if (groupedReport.start_date) {
+            const currentStartDate = new Date(groupedReport.start_date);
+            if (reportDispatchDate < currentStartDate) {
+                groupedReport.start_date = this.formatDate(report.bml_dispatchedat);
+            }
+        } else {
+            groupedReport.start_date = this.formatDate(report.bml_dispatchedat);
+        }
+
+        // Update end_date only if it's later and not null
+        if (report.bml_sentat) {
+            const reportSentDate = new Date(report.bml_sentat);
+            if (!groupedReport.end_date || reportSentDate > new Date(groupedReport.end_date)) {
+                groupedReport.end_date = this.formatDate(report.bml_sentat);
+            }
+        }
+
+        // Increment counts based on status
+        groupedReport.total_mail_received += 1;
+        groupedReport.mail_ignored += report.bml_status === "rejected" ? 1 : 0;
+        groupedReport.mail_skipped += report.bml_status === "skipped" ? 1 : 0;
+        groupedReport.mail_sent += report.bml_status === "sent" ? 1 : 0;
+        groupedReport.mail_bounced += report.bml_status === "bounced" ? 1 : 0;
+        groupedReport.mail_delivered += report.bml_status === "delivered" ? 1 : 0;
+        groupedReport.mail_in_queue += report.bml_status === "queued" ? 1 : 0;
+        groupedReport.total_mail_sent_count += 1;
+
+        // Ensure `bml_msgsize` is a valid number
+        const mailSize = parseFloat(report.bml_msgsize);
+        groupedReport.total_mail_sent_size += isNaN(mailSize) ? 0 : mailSize;
     });
 
     this.groupedReports = Array.from(groupedData.values());
     console.log(this.groupedReports);
   }
+
+
 
   getTotal(column: string): string {
     return this.groupedReports
