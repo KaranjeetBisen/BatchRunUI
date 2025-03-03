@@ -27,13 +27,103 @@
         <form [formGroup]="configForm">
           <!-- <input type="hidden" formControlName="appid" value="72"> -->
 
+
+
+
+
+           <!-- Namespace Section -->
+           <div class="mt-4" style="background-color: #eae9ff;">
+            <strong>Add Namespace</strong>
+            <div>
+              <table id="namespaceConstants" class="table table-bordered"></table>
+            </div>
+
+            <div id="namespaceColumns" style="margin-top: -20px;">
+              <div *ngFor="let col of columns">
+                <label>
+                  <input type="checkbox" (change)="toggleColumnSelection(col, $event)" />
+                  {{ col }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- <div>
+            <table id="namespaceConstants" class="table table-bordered"></table>
+          </div> -->
+          
+
+          <!-- Tag Input Fields -->
+          <div class="row g-3 mt-2">
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" #constantName  class="form-control"  placeholder="campid"
+                value="campid">
+                <label class="custom-label"><span class="text-danger">*</span> Tag Name</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" #constantValue  class="form-control" >
+                <label class="custom-label" ><span class="text-danger">*</span>  Tag Value</label>
+              </div>
+            </div>
+            <div class="col-md-4 mt-4">
+              <button type="button" class="btn btn-color" (click)="addConstant(constantName, constantValue)">Add Tag</button>
+            </div>
+          </div>
+         
+
+          <div class="mt-3" id="constantList">
+            <div *ngFor="let const of constants" class="value-list-item d-flex align-items-center">
+              <span class="column text-primary me-2">{{ const.name }}: {{ const.value }}</span>
+              <div class="close-icon light" (click)="removeConstant(const.name)">
+                <i class="fa fa-times" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columns Input -->
+          <div class="row g-3 mb-2">
+            <div class="col-md-4">
+              <div class="form-floating"> 
+                <input type="text"  #columnInput class="form-control">
+                <label class="custom-label"><span class="text-danger">*</span> Columns</label>
+              </div>
+              <span class="errormsg">{{ columnError }}</span>
+            </div>
+            <div class="col-md-4 mt-4">
+              <button type="button" class="btn btn-color" (click)="addColumn(columnInput)" >Add Columns</button>
+            </div>
+
+
+            <div id="columnsList">
+              <div *ngFor="let col of columns" class="value-list-item d-flex align-items-center">
+                <span class="column text-primary me-2">Column: {{ col }}</span>
+                <div class="close-icon light" (click)="removeColumn(col)">
+                  <i class="fa fa-times" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+
+
+
+
+
+
+
           <!-- Metadata Section -->
           <div class="mt-4" style="background-color: #eae9ff;">
             <strong>Add Tags to Metadata</strong>
             <div id="namespaceColumns">
               <div *ngFor="let const of constants">
                 <label>
-                  <input type="checkbox" (change)="toggleConstantSelection(const, $event)" />
+                  <input type="checkbox" 
+                  [checked]="isConstantSelected(const)"
+                  (change)="toggleConstantSelection(const, $event)" />
                   {{ const.name }}
                 </label>
               </div>
@@ -114,81 +204,7 @@
             </div>
           </div>
 
-          <!-- Namespace Section -->
-          <div class="mt-4" style="background-color: #eae9ff;">
-            <strong>Add Namespace</strong>
-            <div>
-              <table id="namespaceConstants" class="table table-bordered"></table>
-            </div>
-
-            <div id="namespaceColumns" style="margin-top: -20px;">
-              <div *ngFor="let col of columns">
-                <label>
-                  <input type="checkbox" (change)="toggleColumnSelection(col, $event)" />
-                  {{ col }}
-                </label>
-              </div>
-            </div>
-          </div>
-          <!-- <div>
-            <table id="namespaceConstants" class="table table-bordered"></table>
-          </div> -->
-          
-
-          <!-- Tag Input Fields -->
-          <div class="row g-3 mt-2">
-            <div class="col-md-4">
-              <div class="form-floating">
-                <input type="text" #constantName  class="form-control">
-                <label class="custom-label">Tag Name</label>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-floating">
-                <input type="text" #constantValue  class="form-control" >
-                <label class="custom-label" >Tag Value</label>
-              </div>
-            </div>
-            <div class="col-md-4 mt-4">
-              <button type="button" class="btn btn-color" (click)="addConstant(constantName, constantValue)">Add Tag</button>
-            </div>
-          </div>
          
-
-          <div class="mt-3" id="constantList">
-            <div *ngFor="let const of constants" class="value-list-item d-flex align-items-center">
-              <span class="column text-primary me-2">{{ const.name }}: {{ const.value }}</span>
-              <div class="close-icon light" (click)="removeConstant(const.name)">
-                <i class="fa fa-times" aria-hidden="true"></i>
-              </div>
-            </div>
-          </div>
-
-          <!-- Columns Input -->
-          <div class="row g-3 mb-2">
-            <div class="col-md-4">
-              <div class="form-floating"> 
-                <input type="text"  #columnInput class="form-control">
-                <label class="custom-label"><span class="text-danger">*</span> Columns</label>
-              </div>
-              <span class="errormsg">{{ columnError }}</span>
-            </div>
-            <div class="col-md-4 mt-4">
-              <button type="button" class="btn btn-color" (click)="addColumn(columnInput)" >Add Columns</button>
-            </div>
-
-
-            <div id="columnsList">
-              <div *ngFor="let col of columns" class="value-list-item d-flex align-items-center">
-                <span class="column text-primary me-2">Column: {{ col }}</span>
-                <div class="close-icon light" (click)="removeColumn(col)">
-                  <i class="fa fa-times" aria-hidden="true"></i>
-                </div>
-              </div>
-            </div>
-
-
-          </div>
   
 
           <!-- Buttons -->

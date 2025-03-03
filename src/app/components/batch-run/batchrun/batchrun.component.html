@@ -39,7 +39,7 @@
     </div>
 
     <div class="text-lg-start">
-      <button type="button" class="btn btn-color" id="runpreprocessor" onclick="runNewPreprocesser()">Start Batch Run</button>
+      <button type="button" class="btn btn-color" id="runpreprocessor" >Start Batch Run</button>
     </div>
   </form>
 
@@ -49,6 +49,56 @@
     startStatusTimer("", "", "");
   </script>
 </div>
+
+<!-- your-component.html -->
+
+<!-- ================================== -->
+<!-- <h2>Progress Bar Manual Test</h2>
+
+<div>
+  <label>Processed:</label>
+  <input type="number" [(ngModel)]="status.processed">
+  <label>Error:</label>
+  <input type="number" [(ngModel)]="status.error">
+  <label>Pending:</label>
+  <input type="number" [(ngModel)]="status.pending">
+  <label>Percent Complete:</label>
+  <input type="number" [(ngModel)]="status.percentcomplete">
+</div>
+
+<button (click)="updateProgress()">Update Progress</button>
+<button (click)="simulateProgress()">Simulate Progress</button>
+<button (click)="resetProgress()">Reset Progress</button> -->
+<!-- 
+<h2>Progress Bar with Mockoon API</h2>
+
+<app-progress-bar
+  [status]="status"
+  [loopId]="loopId"
+  [refNode]="'pp_success'"
+  [otherRun]="otherRun">
+</app-progress-bar> -->
+
+<div *ngFor="let file of fileProgressList">
+  <app-progress-bar2
+    [filename]="file.filename"
+    [processed]="file.progress[file.currentIndex]?.processed"
+    [total]="file.progress[file.currentIndex]?.processed + file.progress[file.currentIndex]?.pending"
+    [percentComplete]="file.progress[file.currentIndex]?.percentcomplete"
+    [startTime]="file.progress[file.currentIndex]?.rstarttime"
+    [endTime]="file.progress[file.currentIndex]?.rendtime"
+    [errors]="file.progress[file.currentIndex]?.error"
+  ></app-progress-bar2>
+</div>
+
+<button class=" btn btn-color m-1" (click)="startBatchRun('emails.csv')">Start Emails Batch</button>
+<button class="btn btn-color m-1" (click)="startBatchRun('users.csv')">Start Users Batch</button>
+<button class="btn btn-color m-1 " (click)="startBatchRun('orders.csv')">Start Orders Batch</button>
+
+
+
+
+
 
 
 <!-- <div class="container">

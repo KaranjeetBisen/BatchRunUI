@@ -1,0 +1,8 @@
+<div class="progress-bar-container">
+    <h4>{{ filename }}</h4>
+    <p>Processed: {{ processed }} / {{ total }} mails ({{ errors }} errors)</p>
+    <p>Started at: {{ startTime }} | Estimated end: {{ endTime }}</p>
+    <progress max="100" [value]="percentComplete"></progress>
+    <p>{{ percentComplete }}% Complete</p>
+  </div>
+  

@@ -15,9 +15,16 @@ export const environment = {
   //UI Font
   uiFont:"roboto",
 
+  //header customization
+  headerColor: "#452dd6",
+
+  //navbar customization
+  navbarBrandLogoRight: "./cdslLogo.png",
+
   //Button customization
-  buttonColor: "#452dd6",
+  buttonColor: "#4f56d6",
   buttonTextColor: "white",
   buttonHoverColor: "#2A1A83",
   buttonHoverTextColor: "white",
+  
 };

@@ -21,6 +21,8 @@ import { FileViewer2Component } from "../../commons/file-viewer2/file-viewer2.co
   styleUrl: "./create-config-form.component.scss",
 })
 export class CreateConfigFormComponent {
+
+
   configForm: FormGroup;
   successMessage: string = "";
   errorMessage: string = "";
@@ -78,7 +80,9 @@ export class CreateConfigFormComponent {
         "",
         Validators.pattern(/^[^\/][a-zA-Z0-9\/._()\*~!@#^&<>;:'"\-]+[^\/]$/),
       ],
-      subject: ["", Validators.required], // Assuming subject has no specific regex
+      subject: ["", Validators.required],  // Assuming subject has no specific regex
+      selectedColumns: [[]], // Array of selected columns
+      selectedConstants: [[]], // Array of selected constants
     });
   }
 
@@ -124,25 +128,106 @@ onFileSelected(event: Event): void {
 
   selectedConstants: { name: string; value: string }[] = []; // Stores only selected (checked) constants
 
-  /** Adds a new constant */
-  addConstant(nameInput: HTMLInputElement, valueInput: HTMLInputElement) {
-    const name = nameInput.value.trim();
-    const value = valueInput.value.trim();
 
-    if (!name || !value) {
-      this.errorMessage = "Constant name and value cannot be empty!";
-      return;
-    }
-    if (this.constants.some((constant) => constant.name === name)) {
-      this.errorMessage = "Constant with this name already exists!";
-      return;
-    }
+//   /** Adds only the "campid" constant with regex validation */
+// addConstant(nameInput: HTMLInputElement, valueInput: HTMLInputElement) {
+//   this.successMessage='';
+//   const name = nameInput.value.trim();
+//   const value = valueInput.value.trim();
+//   const campidRegex = /^\d{6}_.*$/;
 
-    this.constants.push({ name, value });
-    nameInput.value = "";
-    valueInput.value = "";
-    this.successMessage = `Constant "${name}" added successfully!`;
+//   // Validate name
+//   if (name !== "campid") {
+//     this.errorMessage = 'Only the constant name "campid" is allowed!';
+//     return;
+//   }
+
+//   // Validate value
+//   if (!value) {
+//     this.errorMessage = 'The "campid" value cannot be empty!';
+//     return;
+//   }
+
+//   if (!campidRegex.test(value)) {
+//     this.errorMessage = 'The "campid" value must follow the format: 6 digits followed by an underscore and additional text (e.g., "123456_example").';
+//     return;
+//   }
+
+//   // Prevent duplicates
+//   if (this.constants.some((constant) => constant.name === "campid")) {
+//     this.errorMessage = 'The "campid" constant already exists!';
+//     return;
+//   }
+
+//   // Add the validated constant
+//   this.constants.push({ name, value });
+//   nameInput.value = "";
+//   valueInput.value = "";
+//   this.successMessage = `Constant "${name}" added successfully!`;
+// }
+
+isConstantSelected(constant: { name: string; value: string }): boolean {
+  return this.selectedConstants.some((c) => c.name === constant.name);
+}
+
+/** Adds only the "campid" constant with regex validation and auto-selects it */
+addConstant(nameInput: HTMLInputElement, valueInput: HTMLInputElement) {
+  this.successMessage = '';
+  this.errorMessage = '';
+  const name = nameInput.value.trim();
+  const value = valueInput.value.trim();
+  const campidRegex = /^\d{6}_.*$/;
+
+  // Validate name
+  if (name !== "campid") {
+    this.errorMessage = 'Only the constant name "campid" is allowed!';
+    return;
   }
+
+  // Validate value
+  if (!value) {
+    this.errorMessage = 'The "campid" value cannot be empty!';
+    return;
+  }
+
+  if (!campidRegex.test(value)) {
+    this.errorMessage =
+      'The "campid" value must follow the format: 6 digits followed by an underscore and additional text (e.g., "123456_example").';
+    return;
+  }
+
+  // Prevent duplicates
+  if (this.constants.some((constant) => constant.name === "campid")) {
+    this.errorMessage = 'The "campid" constant already exists!';
+    return;
+  }
+
+  // Add the validated constant
+  const newConstant = { name, value };
+  this.constants.push(newConstant);
+
+  // ✅ Auto-select the newly added constant
+  if (!this.selectedConstants.some((c) => c.name === newConstant.name)) {
+    this.selectedConstants.push(newConstant);
+  }
+
+  // ✅ Assign campid value to form fields
+  this.configForm.patchValue({
+    configFileName: value,
+    templateFileRelativePath: value,
+  });
+
+  // Update the form with the selected constants
+  this.configForm.patchValue({ selectedConstants: this.selectedConstants });
+
+  // Clear input fields
+  nameInput.value = "";
+  valueInput.value = "";
+
+  this.successMessage = `Constant "${name}" added and selected successfully!`;
+}
+
+
 
   /** Toggles selection of constants */
   toggleConstantSelection(
@@ -158,6 +243,7 @@ onFileSelected(event: Event): void {
         (c) => c.name !== constant.name
       );
     }
+    this.configForm.patchValue({ selectedConstants: this.selectedConstants });
   }
 
   /** Removes a constant */
@@ -210,6 +296,7 @@ onFileSelected(event: Event): void {
         (item) => item !== col
       );
     }
+    this.configForm.patchValue({ selectedColumns: this.selectedColumns });
   }
 
   // Remove column from the columns list
@@ -305,32 +392,33 @@ onFileSelected(event: Event): void {
       this.columnError =
         "Required";
     } else if(!this.selectedColumns ||this.selectedColumns.length===0){
-      this.columnError = "Checkbox the required columns.";
+      this.columnError = "Checkbox the required columns";
     }else{
       this.columnError='';
     }
-  }
+
+    if(!this.constants || this.constants.length===0){
+      this.errorMessage = "Constants are required!";
+      } else if(!this.selectedConstants ||this.selectedConstants.length===0){
+        this.errorMessage = "Checkbox the required constants";
+      }else{
+        this.errorMessage='';
+      }
+     }
 
   generateConfigFile() {
 
-    if (!this.configForm.valid || !this.columns ||this.columns.length === 0 || !this.selectedColumns || this.selectedColumns.length === 0) {
+    if (!this.configForm.valid || !this.columns ||this.columns.length === 0 || !this.selectedColumns || this.selectedColumns.length === 0 || !this.selectedConstants || this.selectedConstants.length===0) {
       this.successMessage = "";
       this.setErrorMessage();
       return
     }
-    
-    const configData = {
-      configFileName: this.configForm.value.configFileName,
-      templateFileRelativePath: this.configForm.value.templateFileRelativePath,
-      templateFile: this.configForm.value.templateFile,
-      from: this.configForm.value.from,
-      subject: this.configForm.value.subject,
-      replyto: this.configForm.value.replyto,
-      attachmentDirectory: this.configForm.value.attachmentDirectory,
 
-      columns: this.selectedColumns, // Use only checked columns
-      constants: this.selectedConstants, // Include only checked constants
-    };
+    const configData = this.configForm.value;
+
+  // You can log or process the form data here
+  console.log(configData); // Example logging the form data
+    
 
     try {
       const jsonString = JSON.stringify(configData, null, 2);

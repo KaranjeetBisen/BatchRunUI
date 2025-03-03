@@ -13,5 +13,8 @@ export function loadStyles() {
     root.style.setProperty('--sidebar-bg-color', environment.sidebarBgColor);
     root.style.setProperty('--ui-font', environment.uiFont);
 
+    root.style.setProperty('--header-color', environment.headerColor);
+    root.style.setProperty('--ui-font', environment.uiFont);
+    root.style.setProperty('--navbar-brand-logo-right', environment.navbarBrandLogoRight);
 
   }

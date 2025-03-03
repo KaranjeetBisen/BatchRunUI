@@ -1,0 +1,22 @@
+<div class="progress_outer_div">
+    <div class="progress_title_div">
+      <h3>{{ fileName }}</h3>
+      <p>{{ startedby }}<br>{{ total }} mails</p>
+    </div>
+    <div class="progress_main_div">
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+          [style.width.%]="status.percentcomplete"
+          [attr.aria-valuenow]="status.percentcomplete"
+          aria-valuemin="0" aria-valuemax="100">
+          {{ status.percentcomplete }}%
+        </div>
+      </div>
+      <div class="progress_bar_title">
+        {{ msg }}
+        <div class="errormsg" [innerHTML]="errorMsg + errorLink"></div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  
